@@ -1,31 +1,31 @@
 ﻿using Entities.Concrates;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using System.Reflection;
 
-namespace DataAccess.Concretes.EntityFramework.Contexts;
-
-public class BaseDbContext: DbContext
+namespace DataAccess.Concretes.EntityFramework.Contexts
 {
-    protected IConfiguration Configuration { get; set; }
-    public DbSet<User> Users { get; set; }
-    public DbSet<Applicant> Applicants { get; set; }
-    public DbSet<Employee> Employees { get; set; }
-    public DbSet<Instructor> Instructors { get; set; }
-
-    public BaseDbContext (DbContextOptions dbContextOptions, IConfiguration configuration):base(dbContextOptions)
+    public class BaseDbContext : DbContext
     {
-        Configuration = configuration;
-    }
+        protected IConfiguration Configuration { get; set; }
+        public DbSet<User> Users { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+        public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
         {
-            relationship.DeleteBehavior = DeleteBehavior.Cascade;
+            Configuration = configuration;
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Applicant>().ToTable("Applicants");
+            modelBuilder.Entity<Employee>().ToTable("Employees");
+            modelBuilder.Entity<Instructor>().ToTable("Instructors");
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Cascade;
+            }
         }
     }
-
 }
