@@ -9,7 +9,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable("Users").HasKey(x => x.Id);
-        builder.Property(x => x.Id).HasColumnName("UserId").IsRequired();
+        builder.Property(x => x.Id).HasColumnName("Id").IsRequired();
         builder.Property(x => x.UserName).HasColumnName("UserName").IsRequired();
         builder.Property(x => x.FirstName).HasColumnName("FirstName").IsRequired();
         builder.Property(x => x.LastName).HasColumnName("LastName").IsRequired();
@@ -17,5 +17,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.NationalIdentity).HasColumnName("NationalIdentity").IsRequired();
         builder.Property(x => x.Email).HasColumnName("Email").IsRequired();
         builder.Property(x => x.Password).HasColumnName("Password").IsRequired();
+        builder.Property(x => x.CreatedDate).HasColumnName("CreatedDate");
+        builder.Property(x => x.UpdatedDate).HasColumnName("UpdatedDate");
+        builder.Property(x => x.DeletedDate).HasColumnName("DeletedDate");
     }
 }

@@ -13,10 +13,10 @@ namespace DataAccess.Concretes.EntityFramework.Contexts
         public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
         {
             Configuration = configuration;
-        }
-
+        }    
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Applicant>().ToTable("Applicants");
             modelBuilder.Entity<Employee>().ToTable("Employees");
             modelBuilder.Entity<Instructor>().ToTable("Instructors");

@@ -3,6 +3,6 @@ using Entities.Concrates;
 
 namespace DataAccess.Abstracts;
 
-public interface IUserRepository : IAsyncRepository<User, int>
+public interface IInstructorRepository : IAsyncRepository<Instructor, int>
 {
 }
