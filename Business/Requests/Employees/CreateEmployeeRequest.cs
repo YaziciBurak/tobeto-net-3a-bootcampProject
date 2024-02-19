@@ -2,7 +2,7 @@
 
 namespace Business.Requests.Employees;
 
-public class CreateEmployeeRequest : CreateUserRequest
+public class CreateEmployeeRequest
 {
     public string UserName { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace Business.Requests.Instructors;
 
-public class CreateInstructorRequest : CreateUserRequest
+public class CreateInstructorRequest 
 {
     public string UserName { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace Business.Requests.Applicants;
 
-public class CreateApplicantRequest : CreateUserRequest
+public class CreateApplicantRequest 
 {
     public string UserName { get; set; }
 
