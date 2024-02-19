@@ -18,11 +18,17 @@ namespace Business.Concretes
 
         public async Task<CreateInstructorResponse> AddAsync(CreateInstructorRequest request)
         {
-            Instructor instructor = new Instructor();
-            instructor.Id = request.UserId;
+            Instructor instructor = new();
+            instructor.UserName = request.UserName;
+            instructor.Password = request.Password;
+            instructor.Email = request.Email;
+            instructor.DateOfBirth = request.DateOfBirth;
+            instructor.FirstName = request.FirstName;
+            instructor.LastName = request.LastName;
+            instructor.NationalIdentity = request.NationalIdentity;
             instructor.CompanyName = request.CompanyName;
-            await _instructorRepository.Add(instructor);
-            
+            await _instructorRepository.AddAsync(instructor);
+
             CreateInstructorResponse response = new CreateInstructorResponse();
             response.UserId = instructor.Id;
             response.CompanyName = instructor.CompanyName;
@@ -33,19 +39,17 @@ namespace Business.Concretes
         {
             Instructor instructor = new Instructor();
             instructor.Id = request.UserId;
-            instructor.CompanyName = request.CompanyName;
-            await _instructorRepository.Delete(instructor);
+            await _instructorRepository.DeleteAsync(instructor);
 
             DeleteInstructorResponse response = new DeleteInstructorResponse();
             response.UserId = instructor.Id;
-            response.CompanyName = instructor.CompanyName;
             return response;
         }
 
         public async Task<List<GetAllnstructorResponse>> GetAll()
         {
             List<GetAllnstructorResponse> getAllnstructorResponses = new List<GetAllnstructorResponse>();
-            foreach (var instructor in await _instructorRepository.GetAll())
+            foreach (var instructor in await _instructorRepository.GetAllAsync())
             {
                 GetAllnstructorResponse response = new GetAllnstructorResponse();
                 response.UserId = instructor.Id;
@@ -58,7 +62,8 @@ namespace Business.Concretes
         public async Task<GetByIdInstructorResponse> GetById(int id)
         {
             GetByIdInstructorResponse response = new GetByIdInstructorResponse();
-            Instructor instructor = await _instructorRepository.Get(i => i.Id == id);
+            Instructor instructor = await _instructorRepository.GetAsync(i => i.Id == id);
+            response.UserId = instructor.Id;
             response.CompanyName = instructor.CompanyName;
             return response;
 
@@ -66,14 +71,28 @@ namespace Business.Concretes
 
         public async Task<UpdateInstructorResponse> UpdateAsync(UpdateInstructorRequest request)
         {
-            Instructor instructor = await _instructorRepository.Get(i => i.Id == request.UserId);
+            Instructor instructor = await _instructorRepository.GetAsync(x => x.Id == request.UserId);
             instructor.Id = request.UserId;
             instructor.CompanyName = request.CompanyName;
-            await _instructorRepository.Update(instructor);
+            instructor.UserName = request.UserName;
+            instructor.LastName = request.LastName;
+            instructor.FirstName = request.FirstName;
+            instructor.DateOfBirth = request.DateOfBirth;
+            instructor.Email = request.Email;
+            instructor.NationalIdentity = request.NationalIdentity;
+            instructor.Password = request.Password;
+            await _instructorRepository.UpdateAsync(instructor);
 
             UpdateInstructorResponse response = new UpdateInstructorResponse();
-            response.UserId = request.UserId;
-            response.CompanyName = request.CompanyName;
+            response.UserId = instructor.Id;
+            response.CompanyName = instructor.CompanyName;
+            response.UserName = instructor.UserName;
+            response.Password = instructor.Password;
+            response.NationalIdentity = instructor.NationalIdentity;
+            response.LastName = instructor.LastName;
+            response.FirstName = instructor.FirstName;
+            response.DateOfBirth = instructor.DateOfBirth;
+            response.Email = instructor.Email;
             return response;
         }
     }

@@ -8,6 +8,10 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
-        builder.Property(x => x.Position).HasColumnName("Position").IsRequired();
+        builder.ToTable("Employees");
+
+        builder.Property(x => x.Id).HasColumnName("Id");
+
+        builder.Property(x => x.Position).HasColumnName("Position");
     }
 }

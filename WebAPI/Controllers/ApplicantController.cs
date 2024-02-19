@@ -32,7 +32,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<CreateApplicantResponse> AddAsync(CreateApplicantRequest request)
         {
-            return await _applicantService.AddASync(request);
+            return await _applicantService.AddAsync(request);
         }
 
         [HttpDelete]

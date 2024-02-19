@@ -4,7 +4,6 @@ namespace Entities.Concrates;
 
 public class User : BaseEntity<int>
 {
-    public int Id { get; set; }
     public string UserName { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -16,8 +15,9 @@ public class User : BaseEntity<int>
     public User()
     {
     }
-    public User(string userName, string firstName, string lastName, DateTime dateOfBirth, string nationalIdentity, string email, string password)
+    public User(int Id,string userName, string firstName, string lastName, DateTime dateOfBirth, string nationalIdentity, string email, string password)
     {
+        Id = Id;
         UserName = userName;
         FirstName = firstName;
         LastName = lastName;

@@ -8,6 +8,10 @@ public class ApplicantConfiguration : IEntityTypeConfiguration<Applicant>
 {
     public void Configure(EntityTypeBuilder<Applicant> builder)
     {
-        builder.Property(x => x.About).HasColumnName("About").IsRequired();
+        builder.ToTable("Applicants");
+
+        builder.Property(x => x.Id).HasColumnName("Id");
+
+        builder.Property(x => x.About).HasColumnName("About");
     }
 }

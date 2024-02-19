@@ -7,7 +7,7 @@ public interface IApplicantService
 {
     Task<List<GetAllApplicantResponse>> GetAll();
     Task<GetByIdApplicantResponse> GetById(int id);
-    Task<CreateApplicantResponse> AddASync(CreateApplicantRequest request);
+    Task<CreateApplicantResponse> AddAsync(CreateApplicantRequest request);
     Task<UpdateApplicantResponse> UpdateAsync(UpdateApplicantRequest request);
     Task<DeleteApplicantResponse> DeleteAsync(DeleteApplicantRequest request);
 }

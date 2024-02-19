@@ -8,7 +8,5 @@ public interface IUserService
 {
     Task<List<GetAllUserResponse>> GetAll();
     Task<GetByIdUserResponse> GetById(int id);
-    Task<UpdateUserResponse> UpdateAsync(UpdateUserRequest request);
-    Task<DeleteUserResponse> DeleteAsync(DeleteUserRequest request);
-    Task<CreateUserResponse> Addsync(CreateUserRequest request);
+
 }
