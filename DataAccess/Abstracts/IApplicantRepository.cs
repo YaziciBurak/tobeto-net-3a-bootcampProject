@@ -1,5 +1,6 @@
 ﻿using Core.DataAccess;
 using Entities.Concrates;
+using Entities.Concretes;
 
 namespace DataAccess.Abstracts;
 

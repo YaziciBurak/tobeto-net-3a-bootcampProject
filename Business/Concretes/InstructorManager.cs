@@ -1,8 +1,11 @@
-﻿using Business.Abstracts;
+﻿using AutoMapper;
+using Business.Abstracts;
 using Business.Requests.Instructors;
 using Business.Responses.Instructors;
+using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concrates;
+using Entities.Concretes;
 
 namespace Business.Concretes
 {
@@ -10,13 +13,17 @@ namespace Business.Concretes
     {
 
         private readonly IInstructorRepository _instructorRepository;
+        private readonly IMapper _mapper;
 
-        public InstructorManager(IInstructorRepository instructorRepository)
+       
+
+        public InstructorManager(IInstructorRepository instructorRepository, IMapper mapper)
         {
             _instructorRepository = instructorRepository;
+            _mapper = mapper;
         }
 
-        public async Task<CreateInstructorResponse> AddAsync(CreateInstructorRequest request)
+        public async Task<IDataResult<CreateInstructorResponse>> AddAsync(CreateInstructorRequest request)
         {
             Instructor instructor = new();
             instructor.UserName = request.UserName;
@@ -35,7 +42,7 @@ namespace Business.Concretes
             return response;
         }
 
-        public async Task<DeleteInstructorResponse> DeleteAsync(DeleteInstructorRequest request)
+        public async Task<IDataResult<DeleteInstructorResponse>> DeleteAsync(DeleteInstructorRequest request)
         {
             Instructor instructor = new Instructor();
             instructor.Id = request.UserId;
@@ -46,7 +53,7 @@ namespace Business.Concretes
             return response;
         }
 
-        public async Task<List<GetAllnstructorResponse>> GetAll()
+        public async Task<IDataResult<List<GetAllnstructorResponse>>> GetAll()
         {
             List<GetAllnstructorResponse> getAllnstructorResponses = new List<GetAllnstructorResponse>();
             foreach (var instructor in await _instructorRepository.GetAllAsync())
@@ -59,7 +66,7 @@ namespace Business.Concretes
             return getAllnstructorResponses;
         }
 
-        public async Task<GetByIdInstructorResponse> GetById(int id)
+        public async Task<IDataResult<GetByIdInstructorResponse>> GetById(int id)
         {
             GetByIdInstructorResponse response = new GetByIdInstructorResponse();
             Instructor instructor = await _instructorRepository.GetAsync(i => i.Id == id);
@@ -69,7 +76,7 @@ namespace Business.Concretes
 
         }
 
-        public async Task<UpdateInstructorResponse> UpdateAsync(UpdateInstructorRequest request)
+        public async Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)
         {
             Instructor instructor = await _instructorRepository.GetAsync(x => x.Id == request.UserId);
             instructor.Id = request.UserId;

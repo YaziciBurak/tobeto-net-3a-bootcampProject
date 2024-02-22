@@ -2,6 +2,7 @@
 using DataAccess.Abstracts;
 using DataAccess.Concretes.EntityFramework.Contexts;
 using Entities.Concrates;
+using Entities.Concretes;
 
 namespace DataAccess.Repositories;
 
@@ -10,4 +11,5 @@ public class ApplicantRepository : EfRepositoryBase<Applicant, int, BaseDbContex
     public ApplicantRepository(BaseDbContext context) : base(context)
     {
     }
+
 }

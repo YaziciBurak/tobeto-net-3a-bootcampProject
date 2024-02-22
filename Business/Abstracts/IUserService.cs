@@ -6,6 +6,7 @@ namespace Business.Abstracts;
 
 public interface IUserService
 {
+    //Dönüşte veri dönmüyorsa result -- dönüyosa dataresult
     Task<List<GetAllUserResponse>> GetAll();
     Task<GetByIdUserResponse> GetById(int id);
 

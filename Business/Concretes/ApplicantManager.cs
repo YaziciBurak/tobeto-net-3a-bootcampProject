@@ -1,98 +1,82 @@
-﻿using Business.Abstracts;
+﻿using AutoMapper;
+using Business.Abstracts;
 using Business.Requests.Applicants;
 using Business.Responses.Applicants;
+using Business.Responses.Applications;
+using Core.DataAccess;
+using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using DataAccess.Repositories;
 using Entities.Concrates;
+using Entities.Concretes;
+using Microsoft.EntityFrameworkCore;
 
 namespace Business.Concretes;
 
 public class ApplicantManager : IApplicantService
 {
     private readonly IApplicantRepository _repository;
+    private readonly IMapper _mapper;
 
-    public ApplicantManager(IApplicantRepository repository)
+    public ApplicantManager(IApplicantRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
-    public async Task<CreateApplicantResponse> AddAsync(CreateApplicantRequest request)
+    public async Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request)
     {
-        Applicant applicant = new Applicant();
-        applicant.UserName = request.UserName;
-        applicant.Password = request.Password;
-        applicant.Email = request.Email;
-        applicant.DateOfBirth = request.DateOfBirth;
-        applicant.NationalIdentity = request.NationalIdentity;
-        applicant.FirstName = request.FirstName;
-        applicant.LastName = request.LastName;
-        applicant.About = request.About;
+
+        Applicant applicant = _mapper.Map<Applicant>(request);
         await _repository.AddAsync(applicant);
 
-        CreateApplicantResponse response = new CreateApplicantResponse();
-        response.UserId = applicant.Id;
-        response.About = applicant.About;
-        return response;
+        CreateApplicantResponse response = _mapper.Map<CreateApplicantResponse>(applicant);
+        return new SuccessDataResult<CreateApplicantResponse>(response, "Ekleme Başarılı");
     }
 
-    public async Task<DeleteApplicantResponse> DeleteAsync(DeleteApplicantRequest request)
+    public async Task<IDataResult<DeleteApplicantResponse>> DeleteAsync(DeleteApplicantRequest request)
     {
-        Applicant applicant = new Applicant();
-        applicant.Id = request.UserId;
+        Applicant applicant = _mapper.Map<Applicant>(request);
         await _repository.DeleteAsync(applicant);
 
-        DeleteApplicantResponse response = new DeleteApplicantResponse();
-        response.UserId = applicant.Id;
-        return response;
+        DeleteApplicantResponse response = _mapper.Map<DeleteApplicantResponse>(applicant);
+        return new SuccessDataResult<DeleteApplicantResponse>(response, "Silme Başarılı");
     }
 
-    public async Task<List<GetAllApplicantResponse>> GetAll()
+
+    public async Task<IDataResult<List<GetAllApplicantResponse>>> GetAll()
     {
-        List<GetAllApplicantResponse> applicants = new List<GetAllApplicantResponse>();
-        foreach (var applicant in await _repository.GetAllAsync())
-        {
-            GetAllApplicantResponse applicantResponse = new GetAllApplicantResponse();
-            applicantResponse.UserId = applicant.Id;
-            applicantResponse.About = applicant.About;
-            applicants.Add(applicantResponse);
-        }
-        return applicants;
+        // KONTROL EDİLECEK
+        List<Applicant> applicant = await _repository.GetAllAsync
+            (include: x => x.Include(x => x.Applications));
+        List<GetAllApplicantResponse> responses = _mapper.Map<List<GetAllApplicantResponse>>(applicant);
+        return new SuccessDataResult<List<GetAllApplicantResponse>>(responses, "Listeleme Başarılı");
     }
 
-    public async Task<GetByIdApplicantResponse> GetById(int id)
+
+    public async Task<IDataResult<GetByIdApplicantResponse>> GetById(int id)
     {
-       GetByIdApplicantResponse response = new GetByIdApplicantResponse();
-        Applicant applicant = await _repository.GetAsync(a => a.Id == id);
-        response.UserId = applicant.Id;
-        response.About = applicant.About;
-        return response;
-    }
+        // KONTROL EDİLECEK
+        Applicant applicant = await _repository.GetAsync(x => x.Id == id);
 
-    public async Task<UpdateApplicantResponse> UpdateAsync(UpdateApplicantRequest request)
+        GetByIdApplicantResponse response = _mapper.Map<GetByIdApplicantResponse>(applicant);
+        return new SuccessDataResult<GetByIdApplicantResponse>(response, "GetById İşlemi Başarılı");
+    }
+    public async Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request)
     {
-        Applicant applicant = await _repository.GetAsync(a => a.Id == request.UserId);
-        applicant.Id = request.UserId;
-        applicant.UserName = request.UserName;
-        applicant.Password = request.Password;
-        applicant.Email = request.Email;
-        applicant.DateOfBirth = request.DateOfBirth;
-        applicant.NationalIdentity = request.NationalIdentity;
-        applicant.FirstName = request.FirstName;
-        applicant.LastName = request.LastName;
-        applicant.About = request.About;
-        await _repository.UpdateAsync(applicant);
+        // KONTROL EDİLECEK
+        Applicant applicant = await _repository.GetAsync(x => x.Id == request.UserId);
 
-        UpdateApplicantResponse response = new UpdateApplicantResponse();
-        response.UserId = applicant.Id;
-        response.UserName = applicant.UserName;
-        response.FirstName = applicant.FirstName;
-        response.LastName = applicant.LastName;
-        response.DateOfBirth = applicant.DateOfBirth;
-        response.NationalIdentity = applicant.NationalIdentity;
-        response.Email = applicant.Email;
-        response.Password = applicant.Password;
-        response.About = applicant.About;
-        return response;
 
+        UpdateApplicantResponse response = _mapper.Map<UpdateApplicantResponse>(request);
+        return new SuccessDataResult<UpdateApplicantResponse>(response, "Update İşlemi Başarılı");
     }
+
 }
+
+
+
+
+
+
+

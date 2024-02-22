@@ -1,6 +1,8 @@
-﻿using Business.Abstracts;
+﻿using AutoMapper;
+using Business.Abstracts;
 using Business.Requests.Employees;
 using Business.Responses.Employees;
+using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concrates;
 
@@ -9,13 +11,15 @@ namespace Business.Concretes;
 public class EmployeeManager : IEmployeeService
 {
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IMapper _mapper;
 
-    public EmployeeManager(IEmployeeRepository employeeRepository)
+    public EmployeeManager(IEmployeeRepository employeeRepository, IMapper mapper)
     {
         _employeeRepository = employeeRepository;
+        _mapper = mapper;
     }
 
-    public async Task<CreateEmployeeResponse> AddAsync(CreateEmployeeRequest request)
+    public async Task<IDataResult<CreateEmployeeResponse>> AddAsync(CreateEmployeeRequest request)
     {
         Employee employee = new Employee();
         employee.UserName = request.UserName;
@@ -35,7 +39,7 @@ public class EmployeeManager : IEmployeeService
 
     }
 
-    public async Task<DeleteEmployeeResponse> DeleteAsync(DeleteEmployeeRequest request)
+    public async Task<IDataResult<DeleteEmployeeResponse>> DeleteAsync(DeleteEmployeeRequest request)
     {
         Employee employee = new Employee();
         employee.Id = request.UserId;
@@ -46,7 +50,7 @@ public class EmployeeManager : IEmployeeService
         return response;
     }
 
-    public async Task<List<GetAllEmployeeResponse>> GetAll()
+    public async Task<IDataResult<List<GetAllEmployeeResponse>>> GetAll()
     {
         List<GetAllEmployeeResponse> employees = new List<GetAllEmployeeResponse>();
         foreach (var employee in await _employeeRepository.GetAllAsync())
@@ -59,7 +63,7 @@ public class EmployeeManager : IEmployeeService
         return employees;
     }
 
-    public async Task<GetByIdEmployeeResponse> GetById(int id)
+    public async Task<IDataResult<GetByIdEmployeeResponse>> GetById(int id)
     {
         GetByIdEmployeeResponse response = new GetByIdEmployeeResponse();
         Employee employee = await _employeeRepository.GetAsync(e => e.Id == id);
@@ -69,7 +73,7 @@ public class EmployeeManager : IEmployeeService
 
     }
 
-    public async Task<UpdateEmployeeResponse> UpdateAsync(UpdateEmployeeRequest request)
+    public async Task<IDataResult<UpdateEmployeeResponse>> UpdateAsync(UpdateEmployeeRequest request)
     {
         Employee employee = await _employeeRepository.GetAsync(x => x.Id == request.UserId);
         employee.Id = request.UserId;

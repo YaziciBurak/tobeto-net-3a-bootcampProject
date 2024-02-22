@@ -1,14 +1,15 @@
 ﻿using Business.Requests.Applicants;
 using Business.Requests.Instructors;
 using Business.Responses.Instructors;
+using Core.Utilities.Results;
 
 namespace Business.Abstracts;
 
 public interface IInstructorService
 {
-    Task<List<GetAllnstructorResponse>> GetAll();
-    Task<GetByIdInstructorResponse> GetById(int id);
-    Task<DeleteInstructorResponse> DeleteAsync (DeleteInstructorRequest request);
-    Task<UpdateInstructorResponse> UpdateAsync (UpdateInstructorRequest request);
-    Task<CreateInstructorResponse> AddAsync (CreateInstructorRequest request);
+    Task<IDataResult<List<GetAllnstructorResponse>>> GetAll();
+    Task<IDataResult<GetByIdInstructorResponse>> GetById(int id);
+    Task<IDataResult<DeleteInstructorResponse>> DeleteAsync (DeleteInstructorRequest request);
+    Task<IDataResult<UpdateInstructorResponse>> UpdateAsync (UpdateInstructorRequest request);
+    Task<IDataResult<CreateInstructorResponse>> AddAsync (CreateInstructorRequest request);
 }

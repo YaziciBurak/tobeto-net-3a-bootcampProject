@@ -1,4 +1,5 @@
 ﻿using Entities.Concrates;
+using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,5 +12,7 @@ public class InstructorConfiguration : IEntityTypeConfiguration<Instructor>
         builder.ToTable("Instructors");
         builder.Property(x => x.Id).HasColumnName("Id");
         builder.Property(x => x.CompanyName).HasColumnName("CompanyName");
+
+        builder.HasMany(x => x.Bootcamps);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Entities.Concrates;
+﻿using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,9 +9,11 @@ public class ApplicantConfiguration : IEntityTypeConfiguration<Applicant>
     public void Configure(EntityTypeBuilder<Applicant> builder)
     {
         builder.ToTable("Applicants");
-
         builder.Property(x => x.Id).HasColumnName("Id");
 
         builder.Property(x => x.About).HasColumnName("About");
+
+        builder.HasMany(x => x.Applications);
+       
     }
 }
