@@ -2,5 +2,5 @@
 
 public class DeleteEmployeeResponse
 {
-    public int UserId { get; set; }
+    public int Id { get; set; }
 }

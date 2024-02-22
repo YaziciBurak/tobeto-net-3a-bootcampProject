@@ -11,6 +11,6 @@ public interface IApplicationStateService
     Task<IDataResult<List<GetAllApplicationStateResponse>>> GetAll();
     Task<IDataResult<GetByIdApplicationStateResponse>> GetById(int id);
     Task<IDataResult<CreateApplicationStateResponse>> AddAsync(CreateApplicationStateRequest request);
-    Task<IDataResult<DeleteApplicationStateResponse>> DeleteAsync(DeleteApplicationStateRequest request);
+    Task<IResult> DeleteAsync(DeleteApplicationStateRequest request);
     Task<IDataResult<UpdateApplicationStateResponse>> UpdateAsync(UpdateApplicationStateRequest request);
 }

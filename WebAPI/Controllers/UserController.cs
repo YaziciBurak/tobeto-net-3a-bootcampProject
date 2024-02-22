@@ -1,7 +1,4 @@
 ﻿using Business.Abstracts;
-
-using Business.Responses.Users;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -28,9 +25,6 @@ namespace WebAPI.Controllers
         {
             return Ok(await _userService.GetById(id));
         }
-
-
-
 
     }
 }

@@ -2,6 +2,6 @@
 
 public class CreateEmployeeResponse
 {
-    public int UserId { get; set; }
+    public int Id { get; set; }
     public string Position { get; set; }
 }

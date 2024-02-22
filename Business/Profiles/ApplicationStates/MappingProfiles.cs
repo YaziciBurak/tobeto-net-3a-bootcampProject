@@ -19,7 +19,7 @@ public class MappingProfiles : Profile
         CreateMap<ApplicationState, GetAllApplicationStateResponse>().ReverseMap();
         CreateMap<ApplicationState, CreateApplicationStateResponse>().ReverseMap();
         CreateMap<ApplicationState, DeleteApplicationStateResponse>().ReverseMap();
-        CreateMap<ApplicationState, GetAllApplicationStateResponse>().ReverseMap();
+        CreateMap<ApplicationState, GetByIdApplicationStateResponse>().ReverseMap();
         CreateMap<ApplicationState, UpdateApplicationStateResponse>().ReverseMap();
 
     }

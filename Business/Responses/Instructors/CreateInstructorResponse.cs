@@ -2,6 +2,6 @@
 
 public class CreateInstructorResponse
 {
-    public int UserId { get; set; }
+    public int Id { get; set; }
     public string CompanyName { get; set; }
 }

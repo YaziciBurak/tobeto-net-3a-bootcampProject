@@ -2,10 +2,10 @@
 
 public class GetByIdBootcampResponse
 {
-    public int UserId { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
-    public int InstructorId { get; set; }
-    public int BootcampStateId { get; set; }
+    public string InstructorFirstName { get; set; }
+    public string InstructorLastName { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
 }

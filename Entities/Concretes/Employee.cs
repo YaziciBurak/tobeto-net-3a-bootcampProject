@@ -8,9 +8,5 @@ public class Employee: User
     {
         
     }
-    public Employee(int userId, string position)
-    {
-        Id = userId;
-        Position = position;
-    }
+    
 }

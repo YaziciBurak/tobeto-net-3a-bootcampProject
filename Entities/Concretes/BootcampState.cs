@@ -12,9 +12,4 @@ public class BootcampState : BaseEntity<int>
     {
         Bootcamps = new HashSet<Bootcamp>();
     }
-    public BootcampState(int userId, string name)
-    {
-        Id = userId;
-        Name = name;
-    }
 }

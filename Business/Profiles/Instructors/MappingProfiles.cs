@@ -14,7 +14,7 @@ public class MappingProfiles : Profile
         CreateMap<Instructor, DeleteInstructorRequest>().ReverseMap();
         CreateMap<Instructor, UpdateInstructorRequest>().ReverseMap();
 
-        CreateMap<Instructor, GetAllnstructorResponse>().ReverseMap();
+        CreateMap<Instructor, GetAllInstructorResponse>().ReverseMap();
         CreateMap<Instructor, CreateInstructorResponse>().ReverseMap();
         CreateMap<Instructor, DeleteInstructorResponse>().ReverseMap();
         CreateMap<Instructor, GetByIdInstructorResponse>().ReverseMap();

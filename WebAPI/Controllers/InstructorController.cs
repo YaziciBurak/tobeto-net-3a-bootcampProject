@@ -1,6 +1,8 @@
 ﻿using Business.Abstracts;
 using Business.Requests.Instructors;
 using Business.Responses.Instructors;
+using Core.Utilities.Results;
+using results = Core.Utilities.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,19 +32,19 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<CreateInstructorResponse> AddAsync(CreateInstructorRequest request)
+        public async Task<IDataResult<CreateInstructorResponse>> AddAsync(CreateInstructorRequest request)
         {
             return await _instructorService.AddAsync(request);
         }
 
         [HttpDelete]
-        public async Task<DeleteInstructorResponse> DeleteAsync(DeleteInstructorRequest request)
+        public async Task<results.IResult> DeleteAsync(DeleteInstructorRequest request)
         {
             return await _instructorService.DeleteAsync(request);
         }
 
         [HttpPut]
-        public async Task<UpdateInstructorResponse> UpdateAsync(UpdateInstructorRequest request)
+        public async Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)
         {
             return await _instructorService.UpdateAsync(request);
         }

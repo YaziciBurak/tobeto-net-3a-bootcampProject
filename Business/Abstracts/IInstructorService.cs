@@ -7,9 +7,9 @@ namespace Business.Abstracts;
 
 public interface IInstructorService
 {
-    Task<IDataResult<List<GetAllnstructorResponse>>> GetAll();
+    Task<IDataResult<List<GetAllInstructorResponse>>> GetAll();
     Task<IDataResult<GetByIdInstructorResponse>> GetById(int id);
-    Task<IDataResult<DeleteInstructorResponse>> DeleteAsync (DeleteInstructorRequest request);
+    Task<IResult> DeleteAsync (DeleteInstructorRequest request);
     Task<IDataResult<UpdateInstructorResponse>> UpdateAsync (UpdateInstructorRequest request);
     Task<IDataResult<CreateInstructorResponse>> AddAsync (CreateInstructorRequest request);
 }

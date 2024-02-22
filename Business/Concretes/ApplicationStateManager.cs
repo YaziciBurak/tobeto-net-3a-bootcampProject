@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Business.Abstracts;
 using Business.Requests.ApplicationStates;
+using Business.Responses.Applications;
 using Business.Responses.ApplicationStates;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
+using Entities.Concretes;
+using Microsoft.EntityFrameworkCore;
 
 namespace Business.Concretes;
 
@@ -18,28 +21,45 @@ public class ApplicationStateManager : IApplicationStateService
         _mapper = mapper;
     }
 
-    public Task<IDataResult<CreateApplicationStateResponse>> AddAsync(CreateApplicationStateRequest request)
+    public async Task<IDataResult<CreateApplicationStateResponse>> AddAsync(CreateApplicationStateRequest request)
     {
-        throw new NotImplementedException();
+        {
+            ApplicationState applicationState = _mapper.Map<ApplicationState>(request);
+            await _repository.AddAsync(applicationState);
+
+            CreateApplicationStateResponse response = _mapper.Map<CreateApplicationStateResponse>(applicationState);
+            return new SuccessDataResult<CreateApplicationStateResponse>(response, "Ekleme Başarılı");
+        }
     }
 
-    public Task<IDataResult<DeleteApplicationStateResponse>> DeleteAsync(DeleteApplicationStateRequest request)
+    public async Task<IResult> DeleteAsync(DeleteApplicationStateRequest request)
     {
-        throw new NotImplementedException();
+        ApplicationState applicationState = await _repository.GetAsync(x => x.Id == request.Id);
+        await _repository.DeleteAsync(applicationState);
+        return new SuccessResult("Silme Başarılı");
     }
 
-    public Task<IDataResult<List<GetAllApplicationStateResponse>>> GetAll()
+    public async Task<IDataResult<List<GetAllApplicationStateResponse>>> GetAll()
     {
-        throw new NotImplementedException();
+        List<ApplicationState> applicationState = await _repository.GetAllAsync();
+
+        List<GetAllApplicationStateResponse> responses = _mapper.Map<List<GetAllApplicationStateResponse>>(applicationState);
+        return new SuccessDataResult<List<GetAllApplicationStateResponse>>(responses, "Listeleme Başarılı");
     }
 
-    public Task<IDataResult<GetByIdApplicationStateResponse>> GetById(int id)
+    public async Task<IDataResult<GetByIdApplicationStateResponse>> GetById(int id)
     {
-        throw new NotImplementedException();
+        ApplicationState applicationState = await _repository.GetAsync(x => x.Id == id);
+
+        GetByIdApplicationStateResponse response = _mapper.Map<GetByIdApplicationStateResponse>(applicationState);
+        return new SuccessDataResult<GetByIdApplicationStateResponse>(response, "GetById İşlemi Başarılı");
     }
 
-    public Task<IDataResult<UpdateApplicationStateResponse>> UpdateAsync(UpdateApplicationStateRequest request)
+    public async Task<IDataResult<UpdateApplicationStateResponse>> UpdateAsync(UpdateApplicationStateRequest request)
     {
-        throw new NotImplementedException();
+        ApplicationState applicationState = _mapper.Map<ApplicationState>(request);
+        await _repository.UpdateAsync(applicationState);
+        UpdateApplicationStateResponse response = _mapper.Map<UpdateApplicationStateResponse>(applicationState);
+        return new SuccessDataResult<UpdateApplicationStateResponse>(response, "Update İşlemi Başarılı");
     }
 }

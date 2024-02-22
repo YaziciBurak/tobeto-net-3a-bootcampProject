@@ -9,7 +9,6 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
         builder.ToTable("Employees");
-        builder.Property(x => x.Id).HasColumnName("Id");
 
         builder.Property(x => x.Position).HasColumnName("Position");
     }

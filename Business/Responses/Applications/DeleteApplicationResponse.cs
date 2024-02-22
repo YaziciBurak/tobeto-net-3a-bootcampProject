@@ -2,5 +2,5 @@
 
 public class DeleteApplicationResponse
 {
-    public int UserId { get; set; }
+    public int Id { get; set; }
 }

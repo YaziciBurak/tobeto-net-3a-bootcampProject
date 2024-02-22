@@ -20,7 +20,7 @@ public class MappingProfiles : Profile
         CreateMap<Employee, GetAllEmployeeResponse>().ReverseMap();
         CreateMap<Employee, CreateEmployeeResponse>().ReverseMap();
         CreateMap<Employee, DeleteEmployeeResponse>().ReverseMap();
-        CreateMap<Employee, GetAllEmployeeResponse>().ReverseMap();
+        CreateMap<Employee, GetByIdEmployeeResponse>().ReverseMap();
         CreateMap<Employee, UpdateEmployeeResponse>().ReverseMap();
     }
 }

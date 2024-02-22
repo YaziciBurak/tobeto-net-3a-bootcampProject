@@ -2,14 +2,9 @@
 using Business.Abstracts;
 using Business.Requests.Applicants;
 using Business.Responses.Applicants;
-using Business.Responses.Applications;
-using Core.DataAccess;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
-using DataAccess.Repositories;
-using Entities.Concrates;
 using Entities.Concretes;
-using Microsoft.EntityFrameworkCore;
 
 namespace Business.Concretes;
 
@@ -34,21 +29,18 @@ public class ApplicantManager : IApplicantService
         return new SuccessDataResult<CreateApplicantResponse>(response, "Ekleme Başarılı");
     }
 
-    public async Task<IDataResult<DeleteApplicantResponse>> DeleteAsync(DeleteApplicantRequest request)
+    public async Task<IResult> DeleteAsync(DeleteApplicantRequest request)
     {
-        Applicant applicant = _mapper.Map<Applicant>(request);
+        Applicant applicant = await _repository.GetAsync(x => x.Id == request.Id);
         await _repository.DeleteAsync(applicant);
-
-        DeleteApplicantResponse response = _mapper.Map<DeleteApplicantResponse>(applicant);
-        return new SuccessDataResult<DeleteApplicantResponse>(response, "Silme Başarılı");
+        return new SuccessResult("Silme Başarılı");
     }
 
 
     public async Task<IDataResult<List<GetAllApplicantResponse>>> GetAll()
     {
-        // KONTROL EDİLECEK
-        List<Applicant> applicant = await _repository.GetAllAsync
-            (include: x => x.Include(x => x.Applications));
+
+        List<Applicant> applicant = await _repository.GetAllAsync();
         List<GetAllApplicantResponse> responses = _mapper.Map<List<GetAllApplicantResponse>>(applicant);
         return new SuccessDataResult<List<GetAllApplicantResponse>>(responses, "Listeleme Başarılı");
     }
@@ -56,7 +48,6 @@ public class ApplicantManager : IApplicantService
 
     public async Task<IDataResult<GetByIdApplicantResponse>> GetById(int id)
     {
-        // KONTROL EDİLECEK
         Applicant applicant = await _repository.GetAsync(x => x.Id == id);
 
         GetByIdApplicantResponse response = _mapper.Map<GetByIdApplicantResponse>(applicant);
@@ -64,11 +55,11 @@ public class ApplicantManager : IApplicantService
     }
     public async Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request)
     {
-        // KONTROL EDİLECEK
-        Applicant applicant = await _repository.GetAsync(x => x.Id == request.UserId);
+        Applicant applicant = _mapper.Map<Applicant>(request);
+        await _repository.UpdateAsync(applicant);
 
 
-        UpdateApplicantResponse response = _mapper.Map<UpdateApplicantResponse>(request);
+        UpdateApplicantResponse response = _mapper.Map<UpdateApplicantResponse>(applicant);
         return new SuccessDataResult<UpdateApplicantResponse>(response, "Update İşlemi Başarılı");
     }
 

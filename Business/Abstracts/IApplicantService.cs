@@ -12,5 +12,5 @@ public interface IApplicantService
     Task<IDataResult<GetByIdApplicantResponse>> GetById(int id);
     Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request);
     Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request);
-    Task<IDataResult<DeleteApplicantResponse>> DeleteAsync(DeleteApplicantRequest request);
+    Task<IResult> DeleteAsync(DeleteApplicantRequest request);
 }

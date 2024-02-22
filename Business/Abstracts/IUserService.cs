@@ -1,13 +1,14 @@
 ﻿using Business.Requests.Users;
 using Business.Responses.Users;
+using Core.Utilities.Results;
 using System.Runtime.InteropServices;
 
 namespace Business.Abstracts;
 
 public interface IUserService
 {
-    //Dönüşte veri dönmüyorsa result -- dönüyosa dataresult
-    Task<List<GetAllUserResponse>> GetAll();
-    Task<GetByIdUserResponse> GetById(int id);
+    
+    Task<IDataResult<List<GetAllUserResponse>>> GetAll();
+    Task<IDataResult<GetByIdUserResponse>> GetById(int id);
 
 }

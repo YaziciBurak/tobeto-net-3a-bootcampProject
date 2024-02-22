@@ -2,7 +2,7 @@
 
 public class UpdateBootcampRequest
 {
-    public int UserId { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
     public int InstructorId { get; set; }
     public int BootcampStateId { get; set; }

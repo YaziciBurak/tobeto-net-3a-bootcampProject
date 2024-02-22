@@ -18,15 +18,7 @@ public class Bootcamp : BaseEntity<int>
         Applications = new HashSet<Application>();
     }
 
-    public Bootcamp(int userId, string name, int instructorId, int bootcampState, DateTime startDate, DateTime endDate):this()
-    {
-        Id = userId;
-        Name = name;
-        InstructorId = instructorId;
-        BootcampStateId = bootcampState;
-        StartDate = startDate;
-        EndDate = endDate;
-    }
+  
 
     
 }

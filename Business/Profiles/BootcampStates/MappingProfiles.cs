@@ -11,14 +11,14 @@ public class MappingProfiles : Profile
 {
     public MappingProfiles()
     {
-        CreateMap<BootcampState, CreateBootcampRequest>().ReverseMap();
+        CreateMap<BootcampState, CreateBootcampStateRequest>().ReverseMap();
         CreateMap<BootcampState, DeleteBootcampStateRequest>().ReverseMap(); 
         CreateMap<BootcampState, UpdateBootcampStateRequest>().ReverseMap();
 
         CreateMap<BootcampState, GetAllBootcampStateResponse>().ReverseMap();
         CreateMap<BootcampState, CreateBootcampStateResponse>().ReverseMap();
         CreateMap<BootcampState, DeleteBootcampStateResponse>().ReverseMap();
-        CreateMap<BootcampState, GetAllBootcampStateResponse>().ReverseMap();
+        CreateMap<BootcampState, GetByIdBootcampStateResponse>().ReverseMap();
         CreateMap<BootcampState, UpdateBootcampStateResponse>().ReverseMap();
     }
 }

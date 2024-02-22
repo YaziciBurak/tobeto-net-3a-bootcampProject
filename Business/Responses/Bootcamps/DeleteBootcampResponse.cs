@@ -2,5 +2,5 @@
 
 public class DeleteBootcampResponse
 {
-    public int UserId { get; set; }
+    public int Id { get; set; }
 }

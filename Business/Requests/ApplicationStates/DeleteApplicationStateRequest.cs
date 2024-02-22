@@ -2,5 +2,5 @@
 
 public class DeleteApplicationStateRequest
 {
-    public int UserId { get; set; }
+    public int Id { get; set; }
 }

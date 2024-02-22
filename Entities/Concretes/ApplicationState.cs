@@ -13,9 +13,6 @@ public class ApplicationState : BaseEntity<int>
     {
         Applications = new HashSet<Application>();
     }
-    public ApplicationState(int userId, string name)
-    {
-        Id = userId;
-        Name = name;
-    }
+   
+    
 }

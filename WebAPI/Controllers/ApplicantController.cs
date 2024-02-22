@@ -1,8 +1,9 @@
 ﻿using Business.Abstracts;
 using Business.Requests.Applicants;
 using Business.Responses.Applicants;
-using Microsoft.AspNetCore.Http;
+using results = Core.Utilities.Results;
 using Microsoft.AspNetCore.Mvc;
+using Core.Utilities.Results;
 
 namespace WebAPI.Controllers
 {
@@ -30,19 +31,19 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<CreateApplicantResponse> AddAsync(CreateApplicantRequest request)
+        public async Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request)
         {
             return await _applicantService.AddAsync(request);
         }
 
         [HttpDelete]
-        public async Task<DeleteApplicantResponse> DeleteAsync(DeleteApplicantRequest request)
+        public async Task<results.IResult> DeleteAsync (DeleteApplicantRequest request)
         {
-            return await _applicantService.DeleteAsync(request);
+            return  await _applicantService.DeleteAsync(request);
         }
 
         [HttpPut]
-        public async Task<UpdateApplicantResponse> UpdateAsync(UpdateApplicantRequest request)
+        public async Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request)
         {
             return await _applicantService.UpdateAsync(request);
         }

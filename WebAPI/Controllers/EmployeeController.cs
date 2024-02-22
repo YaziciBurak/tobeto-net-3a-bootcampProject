@@ -2,7 +2,9 @@
 using Business.Requests.Employees;
 using Business.Responses.Employees;
 using Microsoft.AspNetCore.Http;
+using results = Core.Utilities.Results;
 using Microsoft.AspNetCore.Mvc;
+using Core.Utilities.Results;
 
 namespace WebAPI.Controllers
 {
@@ -30,19 +32,19 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<CreateEmployeeResponse> AddAsync(CreateEmployeeRequest request)
+        public async Task<IDataResult<CreateEmployeeResponse>> AddAsync(CreateEmployeeRequest request)
         {
             return await _employeeService.AddAsync(request);
         }
 
         [HttpDelete]
-        public async Task<DeleteEmployeeResponse> DeleteAsync(DeleteEmployeeRequest request)
+        public async Task<results.IResult> DeleteAsync(DeleteEmployeeRequest request)
         {
             return await _employeeService.DeleteAsync(request);
         }
 
         [HttpPut]
-        public async Task<UpdateEmployeeResponse> UpdateAsync(UpdateEmployeeRequest request)
+        public async Task<IDataResult<UpdateEmployeeResponse>> UpdateAsync(UpdateEmployeeRequest request)
         {
             return await _employeeService.UpdateAsync(request);
         }

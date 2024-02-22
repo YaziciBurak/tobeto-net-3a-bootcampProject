@@ -11,6 +11,6 @@ public interface IBootcampStateService
     Task<IDataResult<List<GetAllBootcampStateResponse>>> GetAll();
     Task<IDataResult<GetByIdBootcampStateResponse>> GetById(int id);
     Task<IDataResult<CreateBootcampStateResponse>> AddAsync (CreateBootcampStateRequest request);
-    Task<IDataResult<DeleteBootcampStateResponse>> DeleteAsync (DeleteBootcampStateRequest request);
+    Task<IResult> DeleteAsync (DeleteBootcampStateRequest request);
     Task<IDataResult<UpdateBootcampStateResponse>> UpdateAsync (UpdateBootcampStateRequest request);
 }

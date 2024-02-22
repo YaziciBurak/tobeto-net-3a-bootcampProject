@@ -30,18 +30,16 @@ public class ApplicationManager : IApplicationService
         return new SuccessDataResult<CreateApplicationResponse>(response, "Ekleme Başarılı");
     }
 
-    public async Task<IDataResult<DeleteApplicationResponse>> DeleteAsync(DeleteApplicationRequest request)
+    public async Task<IResult> DeleteAsync(DeleteApplicationRequest request)
     {
-        Application application = _mapper.Map<Application>(request);
+        Application application = await _repository.GetAsync(x => x.Id == request.Id);
         await _repository.DeleteAsync(application);
-
-        DeleteApplicationResponse response = _mapper.Map<DeleteApplicationResponse>(application);
-        return new SuccessDataResult<DeleteApplicationResponse>(response, "Silme Başarılı");
+        return new SuccessResult("Silme Başarılı");
     }
 
     public async Task<IDataResult<List<GetAllApplicationResponse>>> GetAll()
     {
-        // KONTROL EDİLECEK
+      
         List<Application> applications = await _repository.GetAllAsync
           (include: x => x.Include(x => x.Applicant).Include(x => x.ApplicationState).Include(x => x.Bootcamp));
         List<GetAllApplicationResponse> responses = _mapper.Map<List<GetAllApplicationResponse>>(applications);
@@ -50,9 +48,10 @@ public class ApplicationManager : IApplicationService
 
     public async Task<IDataResult<GetByIdApplicationResponse>> GetById(int id)
     {
-        // KONTROL EDİLECEK
+      
 
-        Application application = await _repository.GetAsync(x => x.Id == id);
+        Application application = await _repository.GetAsync(x => x.Id == id,
+            include: x => x.Include(x => x.Applicant).Include(x => x.ApplicationState).Include(x => x.Bootcamp));
 
         GetByIdApplicationResponse response = _mapper.Map<GetByIdApplicationResponse>(application);
         return new SuccessDataResult<GetByIdApplicationResponse>(response, "GetById İşlemi Başarılı");
@@ -60,11 +59,10 @@ public class ApplicationManager : IApplicationService
 
     public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
     {
-        // KONTROL EDİLECEK
-        Application application = await _repository.GetAsync(x => x.Id == request.UserId);
-
-
-        UpdateApplicationResponse response = _mapper.Map<UpdateApplicationResponse>(request);
+      
+        Application application = _mapper.Map<Application>(request);
+        await _repository.UpdateAsync(application);
+        UpdateApplicationResponse response = _mapper.Map<UpdateApplicationResponse>(application);
         return new SuccessDataResult<UpdateApplicationResponse>(response, "Update İşlemi Başarılı");
     }
 }

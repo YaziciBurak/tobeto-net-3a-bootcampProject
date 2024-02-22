@@ -2,5 +2,5 @@
 
 public class DeleteBootcampRequest
 {
-    public int UserId { get; set; }
+    public int Id { get; set; }
 }

@@ -4,6 +4,8 @@ using Business.Requests.Bootcamps;
 using Business.Responses.Bootcamps;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
+using Entities.Concretes;
+using Microsoft.EntityFrameworkCore;
 
 namespace Business.Concretes;
 
@@ -18,28 +20,43 @@ public class BootcampManager : IBootcampService
         _mapper = mapper;
     }
 
-    public Task<IDataResult<CreateBootcampResponse>> AddAsync(CreateBootcampRequest request)
+    public async Task<IDataResult<CreateBootcampResponse>> AddAsync(CreateBootcampRequest request)
     {
-        throw new NotImplementedException();
+        Bootcamp bootcamp = _mapper.Map<Bootcamp>(request);
+        await _repository.AddAsync(bootcamp);
+
+        CreateBootcampResponse response = _mapper.Map<CreateBootcampResponse>(bootcamp);
+        return new SuccessDataResult<CreateBootcampResponse>(response, "Ekleme Başarılı");
     }
 
-    public Task<IDataResult<DeleteBootcampResponse>> DeleteAsync(DeleteBootcampRequest request)
+    public async Task<IResult> DeleteAsync(DeleteBootcampRequest request)
     {
-        throw new NotImplementedException();
+        Bootcamp bootcamp = await _repository.GetAsync(x => x.Id == request.Id);
+        await _repository.DeleteAsync(bootcamp);
+        return new SuccessResult("Silme Başarılı");
     }
 
-    public Task<IDataResult<List<GetAllBootcampResponse>>> GetAll()
+    public async Task<IDataResult<List<GetAllBootcampResponse>>> GetAll()
     {
-        throw new NotImplementedException();
+        List<Bootcamp> bootcamps = await _repository.GetAllAsync
+          (include: x => x.Include(x => x.BootcampState).Include(x => x.Instructor));
+        List<GetAllBootcampResponse> responses = _mapper.Map<List<GetAllBootcampResponse>>(bootcamps);
+        return new SuccessDataResult<List<GetAllBootcampResponse>>(responses, "Listeleme Başarılı");
     }
 
-    public Task<IDataResult<GetByIdBootcampResponse>> GetById(int id)
+    public async Task<IDataResult<GetByIdBootcampResponse>> GetById(int id)
     {
-        throw new NotImplementedException();
+        Bootcamp bootcamp = await _repository.GetAsync(x => x.Id == id, include: x => x.Include(x => x.BootcampState).Include(x => x.Instructor));
+
+        GetByIdBootcampResponse response = _mapper.Map<GetByIdBootcampResponse>(bootcamp);
+        return new SuccessDataResult<GetByIdBootcampResponse>(response, "GetById İşlemi Başarılı");
     }
 
-    public Task<IDataResult<UpdateBootcampResponse>> UpdateAsync(UpdateBootcampRequest request)
+    public async Task<IDataResult<UpdateBootcampResponse>> UpdateAsync(UpdateBootcampRequest request)
     {
-        throw new NotImplementedException();
+        Bootcamp bootcamp = _mapper.Map<Bootcamp>(request);
+        await _repository.UpdateAsync(bootcamp);
+        UpdateBootcampResponse response = _mapper.Map<UpdateBootcampResponse>(bootcamp);
+        return new SuccessDataResult<UpdateBootcampResponse>(response, "Update İşlemi Başarılı");
     }
 }

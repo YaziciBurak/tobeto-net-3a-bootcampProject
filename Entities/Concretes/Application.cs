@@ -18,12 +18,5 @@ public class Application : BaseEntity<int>
 
     }
 
-    public Application(int userId, int applicantId, int bootcampId, int applicationStateId):this()
-    {
-        Id = userId;
-        ApplicantId = applicantId;
-        BootcampId = bootcampId;
-        ApplicationStateId = applicationStateId;
-    }
 
 }
