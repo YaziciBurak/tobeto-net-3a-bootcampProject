@@ -13,7 +13,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BootcampsController : ControllerBase
+    public class BootcampsController : BaseController
     {
         private readonly IBootcampService _service;
 
@@ -25,19 +25,19 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _service.GetAll());
+            return HandleDataResult(await _service.GetAll());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await _service.GetById(id));
+            return HandleDataResult(await _service.GetById(id));
         }
 
         [HttpPost]
-        public async Task<IDataResult<CreateBootcampResponse>> AddAsync(CreateBootcampRequest request)
+        public async Task<IActionResult> AddAsync(CreateBootcampRequest request)
         {
-            return await _service.AddAsync(request);
+            return HandleDataResult(await _service.AddAsync(request));
         }
 
         [HttpDelete]
@@ -47,9 +47,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IDataResult<UpdateBootcampResponse>> UpdateAsync(UpdateBootcampRequest request)
+        public async Task<IActionResult> UpdateAsync(UpdateBootcampRequest request)
         {
-            return await _service.UpdateAsync(request);
+            return HandleDataResult(await _service.UpdateAsync(request));
         }
     }
 }

@@ -17,6 +17,7 @@ namespace DataAccess.Concretes.EntityFramework.Contexts
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<Bootcamp> Bootcamps { get; set; }
         public DbSet<BootcampState> BootcampStates { get; set; }
+        public DbSet<BootcampImage> BootcampImages { get; set; }
 
 
         public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)

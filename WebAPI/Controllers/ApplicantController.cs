@@ -9,7 +9,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApplicantsController : ControllerBase
+    public class ApplicantsController : BaseController
     {
         private readonly IApplicantService _applicantService;
 
@@ -21,19 +21,19 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _applicantService.GetAll());
+            return HandleDataResult(await _applicantService.GetAll());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await _applicantService.GetById(id));
+            return HandleDataResult(await _applicantService.GetById(id));
         }
 
         [HttpPost]
-        public async Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request)
+        public async Task<IActionResult> AddAsync(CreateApplicantRequest request)
         {
-            return await _applicantService.AddAsync(request);
+            return HandleDataResult(await _applicantService.AddAsync(request));
         }
 
         [HttpDelete]
@@ -43,9 +43,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request)
+        public async Task<IActionResult> UpdateAsync(UpdateApplicantRequest request)
         {
-            return await _applicantService.UpdateAsync(request);
+            return HandleDataResult(await _applicantService.UpdateAsync(request));
         }
 
     }
