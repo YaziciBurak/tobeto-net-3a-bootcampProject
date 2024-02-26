@@ -20,6 +20,7 @@ public static class BusinessServiceRegistration
         services.AddScoped<IBootcampStateService, BootcampStateManager>();
         services.AddScoped<IEmployeeService, EmployeeManager>();
         services.AddScoped<IInstructorService, InstructorManager>();
+        services.AddScoped<IBlackListService, BlackListManager>();
 
        
         return services;

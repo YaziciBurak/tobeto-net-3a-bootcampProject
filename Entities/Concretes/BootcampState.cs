@@ -7,6 +7,7 @@ public class BootcampState : BaseEntity<int>
     public string Name { get; set; }
 
     public ICollection<Bootcamp> Bootcamps { get; set; }
+   
 
     public BootcampState()
     {

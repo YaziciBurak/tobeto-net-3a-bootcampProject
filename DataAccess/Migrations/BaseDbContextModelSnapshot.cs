@@ -153,6 +153,36 @@ namespace DataAccess.Migrations
                     b.ToTable("ApplicationStates", (string)null);
                 });
 
+            modelBuilder.Entity("Entities.Concretes.BlackList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApplicantId")
+                        .HasColumnType("int")
+                        .HasColumnName("ApplicantId");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Date");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Reason");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId")
+                        .IsUnique();
+
+                    b.ToTable("BlackLists", (string)null);
+                });
+
             modelBuilder.Entity("Entities.Concretes.Bootcamp", b =>
                 {
                     b.Property<int>("Id")
@@ -334,6 +364,17 @@ namespace DataAccess.Migrations
                     b.Navigation("Bootcamp");
                 });
 
+            modelBuilder.Entity("Entities.Concretes.BlackList", b =>
+                {
+                    b.HasOne("Entities.Concretes.Applicant", "Applicant")
+                        .WithOne("BlackList")
+                        .HasForeignKey("Entities.Concretes.BlackList", "ApplicantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+                });
+
             modelBuilder.Entity("Entities.Concretes.Bootcamp", b =>
                 {
                     b.HasOne("Entities.Concretes.BootcampState", "BootcampState")
@@ -411,6 +452,8 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Concretes.Applicant", b =>
                 {
                     b.Navigation("Applications");
+
+                    b.Navigation("BlackList");
                 });
 
             modelBuilder.Entity("Entities.Concretes.Instructor", b =>

@@ -37,10 +37,10 @@ namespace WebAPI.Controllers
             return HandleDataResult(await _instructorService.AddAsync(request));
         }
 
-        [HttpDelete]
-        public async Task<results.IResult> DeleteAsync(DeleteInstructorRequest request)
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] DeleteInstructorRequest request)
         {
-            return await _instructorService.DeleteAsync(request);
+            return HandleResult(await _instructorService.DeleteAsync(request));
         }
 
         [HttpPut]

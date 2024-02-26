@@ -12,7 +12,9 @@ public class ApplicantConfiguration : IEntityTypeConfiguration<Applicant>
 
         builder.Property(x => x.About).HasColumnName("About");
 
+
         builder.HasMany(x => x.Applications);
-       
+
+      
     }
 }

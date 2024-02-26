@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Business.Abstracts;
 using Business.Requests.Applications;
 using Business.Responses.Applications;
 using Core.DataAccess;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
+using DataAccess.Repositories;
 using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,16 +15,24 @@ namespace Business.Concretes;
 public class ApplicationManager : IApplicationService
 {
     private readonly IApplicationRepository _repository;
+    private readonly IBlackListRepository _blackListRepository;
     private readonly IMapper _mapper;
 
-    public ApplicationManager(IApplicationRepository repository, IMapper mapper)
+    public ApplicationManager(IApplicationRepository repository, IMapper mapper, IBlackListRepository blackListRepository)
     {
         _repository = repository;
         _mapper = mapper;
+        _blackListRepository = blackListRepository; 
     }
 
     public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
     {
+        bool isBlacklisted = await _blackListRepository.IsApplicantBlacklistedAsync(request.ApplicantId);
+        if (isBlacklisted)
+        {
+            return new ErrorDataResult<CreateApplicationResponse>("Bu başvuru sahibi kara listede olduğu için başvuru oluşturulamaz.");
+        }
+
         Application application = _mapper.Map<Application>(request);
         await _repository.AddAsync(application);
 
@@ -48,8 +58,6 @@ public class ApplicationManager : IApplicationService
 
     public async Task<IDataResult<GetByIdApplicationResponse>> GetById(int id)
     {
-      
-
         Application application = await _repository.GetAsync(x => x.Id == id,
             include: x => x.Include(x => x.Applicant).Include(x => x.ApplicationState).Include(x => x.Bootcamp));
 

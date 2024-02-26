@@ -11,7 +11,7 @@ public class ApplicationStateConfiguration : IEntityTypeConfiguration<Applicatio
         builder.ToTable("ApplicationStates").HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("Id");
         builder.Property(x => x.Name).HasColumnName("Name");
-     
+
         builder.HasMany(x => x.Applications);
     }
 }

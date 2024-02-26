@@ -11,6 +11,7 @@ namespace DataAccess.Concretes.EntityFramework.Contexts
         protected IConfiguration Configuration { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Applicant> Applicants { get; set; }
+        public DbSet<BlackList> BlackList { get; set; }
         public DbSet<Application> Applications { get; set; }
         public DbSet<ApplicationState> ApplicationStates { get; set; }
         public DbSet<Employee> Employees { get; set; }
