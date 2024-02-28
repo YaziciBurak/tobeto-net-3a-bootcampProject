@@ -14,10 +14,4 @@ public class Applicant : User
     {
         Applications = new HashSet<Application>();
     }
-
-    public Applicant(int Id,string about)
-    {
-        Id = Id;
-        About = about;
-    }
 }

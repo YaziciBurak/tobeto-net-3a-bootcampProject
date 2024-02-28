@@ -6,8 +6,10 @@ using Business.Responses.Applicants;
 using Business.Responses.Bootcamps;
 using Business.Responses.BootcampStates;
 using Core.DataAccess;
+using Core.Exceptions.Types;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
+using DataAccess.Repositories;
 using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +37,7 @@ public class BootcampStateManager : IBootcampStateService
 
     public async Task<IResult> DeleteAsync(DeleteBootcampStateRequest request)
     {
+        await CheckIfIdNotExists(request.Id);
         BootcampState bootcampState = await _repository.GetAsync(x => x.Id == request.Id);
         await _repository.DeleteAsync(bootcampState);
         return new SuccessResult("Silme Başarılı");
@@ -49,6 +52,7 @@ public class BootcampStateManager : IBootcampStateService
 
     public async Task<IDataResult<GetByIdBootcampStateResponse>> GetById(int id)
     {
+        await CheckIfIdNotExists(id);
         BootcampState bootcampState = await _repository.GetAsync(x => x.Id == id);
         GetByIdBootcampStateResponse response = _mapper.Map<GetByIdBootcampStateResponse>(bootcampState);
         return new SuccessDataResult<GetByIdBootcampStateResponse>(response, "GetById İşlemi Başarılı");
@@ -56,9 +60,16 @@ public class BootcampStateManager : IBootcampStateService
 
     public async Task<IDataResult<UpdateBootcampStateResponse>> UpdateAsync(UpdateBootcampStateRequest request)
     {
-        BootcampState bootcampState = _mapper.Map<BootcampState>(request);
+        await CheckIfIdNotExists(request.Id);
+        BootcampState bootcampState = await _repository.GetAsync(x => x.Id == request.Id);
+        _mapper.Map(request, bootcampState);
         await _repository.UpdateAsync(bootcampState);
         UpdateBootcampStateResponse response = _mapper.Map<UpdateBootcampStateResponse>(bootcampState);
         return new SuccessDataResult<UpdateBootcampStateResponse>(response, "Update İşlemi Başarılı");
+    }
+    private async Task CheckIfIdNotExists(int bootcampStateId)
+    {
+        var isExists = await _repository.GetAsync(bootcampState => bootcampState.Id == bootcampStateId);
+        if (isExists is null) throw new BusinessException("Id not exists");
     }
 }

@@ -3,8 +3,10 @@ using Business.Abstracts;
 using Business.Requests.ApplicationStates;
 using Business.Responses.Applications;
 using Business.Responses.ApplicationStates;
+using Core.Exceptions.Types;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
+using DataAccess.Repositories;
 using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +36,7 @@ public class ApplicationStateManager : IApplicationStateService
 
     public async Task<IResult> DeleteAsync(DeleteApplicationStateRequest request)
     {
+        await CheckIfIdNotExists(request.Id);
         ApplicationState applicationState = await _repository.GetAsync(x => x.Id == request.Id);
         await _repository.DeleteAsync(applicationState);
         return new SuccessResult("Silme Başarılı");
@@ -49,6 +52,7 @@ public class ApplicationStateManager : IApplicationStateService
 
     public async Task<IDataResult<GetByIdApplicationStateResponse>> GetById(int id)
     {
+        await CheckIfIdNotExists(id);
         ApplicationState applicationState = await _repository.GetAsync(x => x.Id == id);
 
         GetByIdApplicationStateResponse response = _mapper.Map<GetByIdApplicationStateResponse>(applicationState);
@@ -57,9 +61,16 @@ public class ApplicationStateManager : IApplicationStateService
 
     public async Task<IDataResult<UpdateApplicationStateResponse>> UpdateAsync(UpdateApplicationStateRequest request)
     {
+        await CheckIfIdNotExists(request.Id);
         ApplicationState applicationState = _mapper.Map<ApplicationState>(request);
         await _repository.UpdateAsync(applicationState);
         UpdateApplicationStateResponse response = _mapper.Map<UpdateApplicationStateResponse>(applicationState);
         return new SuccessDataResult<UpdateApplicationStateResponse>(response, "Update İşlemi Başarılı");
+    }
+    private async Task CheckIfIdNotExists(int applicationStateId)
+    {
+        var isExists = await _repository.GetAsync(applicationState => applicationState.Id == applicationStateId);
+        if (isExists is null) throw new BusinessException("Id not exists");
+
     }
 }

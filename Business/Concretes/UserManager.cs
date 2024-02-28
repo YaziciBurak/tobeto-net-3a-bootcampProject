@@ -3,6 +3,7 @@ using Business.Abstracts;
 using Business.Responses.Instructors;
 using Business.Responses.Users;
 using Core.DataAccess;
+using Core.Exceptions.Types;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concrates;
@@ -30,10 +31,15 @@ public class UserManager : IUserService
 
     public async Task<IDataResult<GetByIdUserResponse>> GetById(int id)
     {
+        await CheckIfIdNotExists(id);
         User user = await _userRepository.GetAsync(x => x.Id == id);
         GetByIdUserResponse response = _mapper.Map<GetByIdUserResponse>(user);
         return new SuccessDataResult<GetByIdUserResponse>(response, "GetById İşlemi Başarılı");
     }
-
+    private async Task CheckIfIdNotExists(int userId)
+    {
+        var isExists = await _userRepository.GetAsync(x => x.Id == userId);
+        if (isExists is null) throw new BusinessException("Id not exists");
+    }
 
 }
