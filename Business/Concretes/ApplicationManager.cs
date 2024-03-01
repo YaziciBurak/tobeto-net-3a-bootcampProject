@@ -3,6 +3,7 @@ using Azure.Core;
 using Business.Abstracts;
 using Business.Requests.Applications;
 using Business.Responses.Applications;
+using Business.Rules;
 using Core.DataAccess;
 using Core.Exceptions.Types;
 using Core.Utilities.Results;
@@ -16,19 +17,19 @@ namespace Business.Concretes;
 public class ApplicationManager : IApplicationService
 {
     private readonly IApplicationRepository _repository;
-    private readonly IBlackListRepository _blackListRepository;
     private readonly IMapper _mapper;
+    private readonly ApplicationBusinessRules _rules;
 
-    public ApplicationManager(IApplicationRepository repository, IMapper mapper, IBlackListRepository blackListRepository)
+    public ApplicationManager(IApplicationRepository repository, IMapper mapper, ApplicationBusinessRules applicationBusinessRules)
     {
         _repository = repository;
         _mapper = mapper;
-        _blackListRepository = blackListRepository; 
+        _rules = applicationBusinessRules; 
     }
 
     public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
     {
-        await CheckIfBlacklist(request.ApplicantId);
+        await _rules.CheckIfBlacklist(request.ApplicantId);
         Application application = _mapper.Map<Application>(request);
         await _repository.AddAsync(application);
 
@@ -38,7 +39,7 @@ public class ApplicationManager : IApplicationService
 
     public async Task<IResult> DeleteAsync(DeleteApplicationRequest request)
     {
-        await CheckIfIdNotExists(request.Id);
+        await _rules.CheckIfIdNotExists(request.Id);
         Application application = await _repository.GetAsync(x => x.Id == request.Id);
         await _repository.DeleteAsync(application);
         return new SuccessResult("Silme Başarılı");
@@ -55,7 +56,7 @@ public class ApplicationManager : IApplicationService
 
     public async Task<IDataResult<GetByIdApplicationResponse>> GetById(int id)
     {
-        await CheckIfIdNotExists(id);
+        await _rules.CheckIfIdNotExists(id);
         Application application = await _repository.GetAsync(x => x.Id == id,
             include: x => x.Include(x => x.Applicant).Include(x => x.ApplicationState).Include(x => x.Bootcamp));
 
@@ -65,24 +66,11 @@ public class ApplicationManager : IApplicationService
 
     public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
     {
-        await CheckIfIdNotExists(request.Id);
+        await _rules.CheckIfIdNotExists(request.Id);
         Application application = _mapper.Map<Application>(request);
         await _repository.UpdateAsync(application);
         UpdateApplicationResponse response = _mapper.Map<UpdateApplicationResponse>(application);
         return new SuccessDataResult<UpdateApplicationResponse>(response, "Update İşlemi Başarılı");
-    }
-
-    private async Task CheckIfIdNotExists(int applicationId)
-    {
-        var isExists = await _repository.GetAsync(application => application.Id == applicationId);
-        if (isExists is null) throw new BusinessException("Id not exists");
-
-    }
-    private async Task CheckIfBlacklist(int id)
-    {
-        var isBlacklisted = await _blackListRepository.GetAsync(x => x.ApplicantId == id);
-        if (isBlacklisted is not null) throw new BusinessException("Bu başvuru sahibi kara listede olduğu için başvuru oluşturulamaz.");
-
     }
 }
 

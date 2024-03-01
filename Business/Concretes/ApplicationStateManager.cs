@@ -3,6 +3,7 @@ using Business.Abstracts;
 using Business.Requests.ApplicationStates;
 using Business.Responses.Applications;
 using Business.Responses.ApplicationStates;
+using Business.Rules;
 using Core.Exceptions.Types;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
@@ -16,11 +17,13 @@ public class ApplicationStateManager : IApplicationStateService
 {
     private readonly IApplicationStateRepository _repository;
     private readonly IMapper _mapper;
+    private readonly ApplicationStateBusinessRules _rules;
 
-    public ApplicationStateManager(IApplicationStateRepository applicationStateRepository, IMapper mapper)
+    public ApplicationStateManager(IApplicationStateRepository applicationStateRepository, IMapper mapper, ApplicationStateBusinessRules applicationStateBusinessRules)
     {
         _repository = applicationStateRepository;
         _mapper = mapper;
+        _rules = applicationStateBusinessRules;
     }
 
     public async Task<IDataResult<CreateApplicationStateResponse>> AddAsync(CreateApplicationStateRequest request)
@@ -36,7 +39,7 @@ public class ApplicationStateManager : IApplicationStateService
 
     public async Task<IResult> DeleteAsync(DeleteApplicationStateRequest request)
     {
-        await CheckIfIdNotExists(request.Id);
+        await _rules.CheckIfIdNotExists(request.Id);
         ApplicationState applicationState = await _repository.GetAsync(x => x.Id == request.Id);
         await _repository.DeleteAsync(applicationState);
         return new SuccessResult("Silme Başarılı");
@@ -52,7 +55,7 @@ public class ApplicationStateManager : IApplicationStateService
 
     public async Task<IDataResult<GetByIdApplicationStateResponse>> GetById(int id)
     {
-        await CheckIfIdNotExists(id);
+        await _rules.CheckIfIdNotExists(id);
         ApplicationState applicationState = await _repository.GetAsync(x => x.Id == id);
 
         GetByIdApplicationStateResponse response = _mapper.Map<GetByIdApplicationStateResponse>(applicationState);
@@ -61,16 +64,11 @@ public class ApplicationStateManager : IApplicationStateService
 
     public async Task<IDataResult<UpdateApplicationStateResponse>> UpdateAsync(UpdateApplicationStateRequest request)
     {
-        await CheckIfIdNotExists(request.Id);
+        await _rules.CheckIfIdNotExists(request.Id);
         ApplicationState applicationState = _mapper.Map<ApplicationState>(request);
         await _repository.UpdateAsync(applicationState);
         UpdateApplicationStateResponse response = _mapper.Map<UpdateApplicationStateResponse>(applicationState);
         return new SuccessDataResult<UpdateApplicationStateResponse>(response, "Update İşlemi Başarılı");
     }
-    private async Task CheckIfIdNotExists(int applicationStateId)
-    {
-        var isExists = await _repository.GetAsync(applicationState => applicationState.Id == applicationStateId);
-        if (isExists is null) throw new BusinessException("Id not exists");
-
-    }
+   
 }
