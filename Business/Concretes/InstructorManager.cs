@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Abstracts;
+using Business.Constants;
 using Business.Requests.Instructors;
 using Business.Responses.Instructors;
 using Business.Rules;
@@ -33,7 +34,7 @@ internal class InstructorManager : IInstructorService
         Instructor instructor = _mapper.Map<Instructor>(request);
         await _repository.AddAsync(instructor);
         CreateInstructorResponse response = _mapper.Map<CreateInstructorResponse>(instructor);
-        return new SuccessDataResult<CreateInstructorResponse>(response, "Ekleme Başarılı");
+        return new SuccessDataResult<CreateInstructorResponse>(response, InstructorMessages.InstructorAdded);
     }
     public async Task<IResult> DeleteAsync(DeleteInstructorRequest request)
     {
@@ -46,14 +47,14 @@ internal class InstructorManager : IInstructorService
     {
         List<Instructor> instructors = await _repository.GetAllAsync();
         List<GetAllInstructorResponse> responses = _mapper.Map<List<GetAllInstructorResponse>>(instructors);
-        return new SuccessDataResult<List<GetAllInstructorResponse>>(responses, "Listeleme Başarılı");
+        return new SuccessDataResult<List<GetAllInstructorResponse>>(responses, InstructorMessages.InstructorGetAll);
     }
     public async Task<IDataResult<GetByIdInstructorResponse>> GetById(int id)
     {
         await _rules.CheckIfIdNotExists(id);
         Instructor instructor = await _repository.GetAsync(x => x.Id == id);
         GetByIdInstructorResponse response = _mapper.Map<GetByIdInstructorResponse>(instructor);
-        return new SuccessDataResult<GetByIdInstructorResponse>(response, "GetById İşlemi Başarılı");
+        return new SuccessDataResult<GetByIdInstructorResponse>(response, InstructorMessages.InstructorGetById);
     }
     public async Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)
     {
@@ -62,6 +63,6 @@ internal class InstructorManager : IInstructorService
         _mapper.Map(request, instructor);
         await _repository.UpdateAsync(instructor);
         UpdateInstructorResponse response = _mapper.Map<UpdateInstructorResponse>(instructor);
-        return new SuccessDataResult<UpdateInstructorResponse>(response, "Update İşlemi Başarılı");
+        return new SuccessDataResult<UpdateInstructorResponse>(response, InstructorMessages.InstructortUpdated);
     }
 }

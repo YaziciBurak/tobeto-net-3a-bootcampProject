@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Abstracts;
+using Business.Constants;
 using Business.Requests.Applicants;
 using Business.Responses.Applicants;
 using Business.Rules;
@@ -29,9 +30,8 @@ public class ApplicantManager : IApplicantService
         await _rules.CheckIfApplicantNotExists(request.UserName, request.NationalIdentity);
         Applicant applicant = _mapper.Map<Applicant>(request);
         await _repository.AddAsync(applicant);
-
         CreateApplicantResponse response = _mapper.Map<CreateApplicantResponse>(applicant);
-        return new SuccessDataResult<CreateApplicantResponse>(response, "Ekleme Başarılı");
+        return new SuccessDataResult<CreateApplicantResponse>(response, ApplicantMessages.ApplicantAdded);
     }
 
     public async Task<IResult> DeleteAsync(DeleteApplicantRequest request)
@@ -39,7 +39,7 @@ public class ApplicantManager : IApplicantService
         await _rules.CheckIfIdNotExists(request.Id);
         Applicant applicant = await _repository.GetAsync(x => x.Id == request.Id);
         await _repository.DeleteAsync(applicant);
-        return new SuccessResult("Silme Başarılı");
+        return new SuccessResult(ApplicantMessages.ApplicantDeleted);
     }
 
 
@@ -48,7 +48,7 @@ public class ApplicantManager : IApplicantService
 
         List<Applicant> applicant = await _repository.GetAllAsync();
         List<GetAllApplicantResponse> responses = _mapper.Map<List<GetAllApplicantResponse>>(applicant);
-        return new SuccessDataResult<List<GetAllApplicantResponse>>(responses, "Listeleme Başarılı");
+        return new SuccessDataResult<List<GetAllApplicantResponse>>(responses, ApplicantMessages.ApplicantGetAll);
     }
 
 
@@ -56,18 +56,17 @@ public class ApplicantManager : IApplicantService
     {
         await _rules.CheckIfIdNotExists(id);
         Applicant applicant = await _repository.GetAsync(x => x.Id == id);
-
         GetByIdApplicantResponse response = _mapper.Map<GetByIdApplicantResponse>(applicant);
-        return new SuccessDataResult<GetByIdApplicantResponse>(response, "GetById İşlemi Başarılı");
+        return new SuccessDataResult<GetByIdApplicantResponse>(response, ApplicantMessages.ApplicantGetById);
     }
     public async Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request)
     {
         await _rules.CheckIfIdNotExists(request.Id);
-        Applicant applicant = _mapper.Map<Applicant>(request);
+        Applicant applicant = await _repository.GetAsync(x => x.Id == request.Id);
+        _mapper.Map(request, applicant);
         await _repository.UpdateAsync(applicant);
-
         UpdateApplicantResponse response = _mapper.Map<UpdateApplicantResponse>(applicant);
-        return new SuccessDataResult<UpdateApplicantResponse>(response, "Update İşlemi Başarılı");
+        return new SuccessDataResult<UpdateApplicantResponse>(response, ApplicantMessages.ApplicantUpdated);
     }
 }
 

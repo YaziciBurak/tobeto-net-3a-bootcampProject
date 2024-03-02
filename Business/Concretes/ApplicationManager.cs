@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Azure.Core;
 using Business.Abstracts;
+using Business.Constants;
 using Business.Requests.Applications;
 using Business.Responses.Applications;
 using Business.Rules;
@@ -34,7 +35,7 @@ public class ApplicationManager : IApplicationService
         await _repository.AddAsync(application);
 
         CreateApplicationResponse response = _mapper.Map<CreateApplicationResponse>(application);
-        return new SuccessDataResult<CreateApplicationResponse>(response, "Ekleme Başarılı");
+        return new SuccessDataResult<CreateApplicationResponse>(response, ApplicationMessages.ApplicationAdded);
     }
 
     public async Task<IResult> DeleteAsync(DeleteApplicationRequest request)
@@ -42,7 +43,7 @@ public class ApplicationManager : IApplicationService
         await _rules.CheckIfIdNotExists(request.Id);
         Application application = await _repository.GetAsync(x => x.Id == request.Id);
         await _repository.DeleteAsync(application);
-        return new SuccessResult("Silme Başarılı");
+        return new SuccessResult(ApplicationMessages.ApplicationDeleted);
     }
 
     public async Task<IDataResult<List<GetAllApplicationResponse>>> GetAll()
@@ -51,7 +52,7 @@ public class ApplicationManager : IApplicationService
         List<Application> applications = await _repository.GetAllAsync
           (include: x => x.Include(x => x.Applicant).Include(x => x.ApplicationState).Include(x => x.Bootcamp));
         List<GetAllApplicationResponse> responses = _mapper.Map<List<GetAllApplicationResponse>>(applications);
-        return new SuccessDataResult<List<GetAllApplicationResponse>>(responses, "Listeleme Başarılı");
+        return new SuccessDataResult<List<GetAllApplicationResponse>>(responses, ApplicationMessages.ApplicationGetAll);
     }
 
     public async Task<IDataResult<GetByIdApplicationResponse>> GetById(int id)
@@ -61,16 +62,16 @@ public class ApplicationManager : IApplicationService
             include: x => x.Include(x => x.Applicant).Include(x => x.ApplicationState).Include(x => x.Bootcamp));
 
         GetByIdApplicationResponse response = _mapper.Map<GetByIdApplicationResponse>(application);
-        return new SuccessDataResult<GetByIdApplicationResponse>(response, "GetById İşlemi Başarılı");
+        return new SuccessDataResult<GetByIdApplicationResponse>(response, ApplicationMessages.ApplicationGetById);
     }
 
     public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
     {
         await _rules.CheckIfIdNotExists(request.Id);
-        Application application = _mapper.Map<Application>(request);
-        await _repository.UpdateAsync(application);
+        Application application = await _repository.GetAsync(x => x.Id == request.Id);
+        _mapper.Map(request, application);
         UpdateApplicationResponse response = _mapper.Map<UpdateApplicationResponse>(application);
-        return new SuccessDataResult<UpdateApplicationResponse>(response, "Update İşlemi Başarılı");
+        return new SuccessDataResult<UpdateApplicationResponse>(response, ApplicationMessages.ApplicationUpdated);
     }
 }
 
