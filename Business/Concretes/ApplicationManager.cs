@@ -46,8 +46,7 @@ public class ApplicationManager : IApplicationService
     }
 
     public async Task<IDataResult<List<GetAllApplicationResponse>>> GetAll()
-    {
-      
+    {   
         List<Application> applications = await _repository.GetAllAsync
           (include: x => x.Include(x => x.Applicant).Include(x => x.ApplicationState).Include(x => x.Bootcamp));
         List<GetAllApplicationResponse> responses = _mapper.Map<List<GetAllApplicationResponse>>(applications);
@@ -59,7 +58,6 @@ public class ApplicationManager : IApplicationService
         await _rules.CheckIfIdNotExists(id);
         Application application = await _repository.GetAsync(x => x.Id == id,
             include: x => x.Include(x => x.Applicant).Include(x => x.ApplicationState).Include(x => x.Bootcamp));
-
         GetByIdApplicationResponse response = _mapper.Map<GetByIdApplicationResponse>(application);
         return new SuccessDataResult<GetByIdApplicationResponse>(response, ApplicationMessages.ApplicationGetById);
     }
