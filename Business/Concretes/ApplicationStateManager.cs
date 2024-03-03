@@ -10,6 +10,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using DataAccess.Repositories;
 using Entities.Concretes;
+using Entities.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Business.Concretes;

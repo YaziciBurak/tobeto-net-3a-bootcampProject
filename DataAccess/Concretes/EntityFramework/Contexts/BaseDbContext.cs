@@ -1,5 +1,6 @@
 ﻿using Entities.Concrates;
 using Entities.Concretes;
+using Entities.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;

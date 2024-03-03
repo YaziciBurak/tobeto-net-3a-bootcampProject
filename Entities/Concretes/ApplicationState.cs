@@ -1,6 +1,8 @@
 ﻿using Core.Entities;
+using Entities.Concretes;
 
-namespace Entities.Concretes;
+
+namespace Entities.Entity;
 
 public class ApplicationState : BaseEntity<int>
 {

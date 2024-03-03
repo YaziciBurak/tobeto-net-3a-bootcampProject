@@ -1,5 +1,4 @@
 ﻿using Core.Entities;
-using Entities.Concrates;
 
 namespace Entities.Concretes;
 

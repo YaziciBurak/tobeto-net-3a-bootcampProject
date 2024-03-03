@@ -5,6 +5,7 @@ using Business.Responses.Applicants;
 using Business.Responses.Applications;
 using Business.Responses.ApplicationStates;
 using Entities.Concretes;
+using Entities.Entity;
 
 namespace Business.Profiles.ApplicationStates;
 

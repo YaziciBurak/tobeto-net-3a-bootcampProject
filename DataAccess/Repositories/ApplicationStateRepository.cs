@@ -2,6 +2,7 @@
 using DataAccess.Abstracts;
 using DataAccess.Concretes.EntityFramework.Contexts;
 using Entities.Concretes;
+using Entities.Entity;
 
 namespace DataAccess.Repositories;
 
