@@ -1,4 +1,5 @@
-﻿using Core.CrossCuttingConcerns;
+﻿using Business.Constants;
+using Core.CrossCuttingConcerns;
 using Core.Exceptions.Types;
 using DataAccess.Abstracts;
 
@@ -14,6 +15,6 @@ public class BootcampStateBusinessRules : BaseBusinessRules
     public async Task CheckIfIdNotExists(int bootcampStateId)
     {
         var isExists = await _repository.GetAsync(bootcampState => bootcampState.Id == bootcampStateId);
-        if (isExists is null) throw new BusinessException("Bootcamp State Id is not exists");
+        if (isExists is null) throw new BusinessException(BootcampStateMessages.BootcampStateExist);
     }
 }

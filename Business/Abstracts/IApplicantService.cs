@@ -6,8 +6,6 @@ namespace Business.Abstracts;
 
 public interface IApplicantService
 {
-
-    
     Task<IDataResult<List<GetAllApplicantResponse>>> GetAll();
     Task<IDataResult<GetByIdApplicantResponse>> GetById(int id);
     Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request);

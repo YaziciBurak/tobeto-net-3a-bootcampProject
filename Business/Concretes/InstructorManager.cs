@@ -41,7 +41,7 @@ internal class InstructorManager : IInstructorService
         await _rules.CheckIfIdNotExists(request.Id);
         Instructor instructor = await _repository.GetAsync(x => x.Id == request.Id);
         await _repository.DeleteAsync(instructor);
-        return new SuccessResult("Silme Başarılı");
+        return new SuccessResult(InstructorMessages.InstructorDeleted);
     }
     public async Task<IDataResult<List<GetAllInstructorResponse>>> GetAll()
     {

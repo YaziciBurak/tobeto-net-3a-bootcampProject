@@ -1,4 +1,5 @@
-﻿using Core.CrossCuttingConcerns;
+﻿using Business.Constants;
+using Core.CrossCuttingConcerns;
 using Core.Exceptions.Types;
 using DataAccess.Abstracts;
 
@@ -14,11 +15,11 @@ public class InstructorBusinessRules : BaseBusinessRules
     public async Task CheckIfIdNotExists(int instructorId)
     {
         var isExists = await _repository.GetAsync(x => x.Id == instructorId);
-        if (isExists is null) throw new BusinessException("Instructor Id is not exists");
+        if (isExists is null) throw new BusinessException(InstructorMessages.InstructorNotExist);
     }
     public async Task CheckIfInstructorNotExists(string userName, string nationalIdentity)
     {
         var isExists = await _repository.GetAsync(x => x.UserName == userName || x.NationalIdentity == nationalIdentity);
-        if (isExists is not null) throw new BusinessException("UserName or National Identity is already exists");
+        if (isExists is not null) throw new BusinessException(InstructorMessages.InstructorUsernameNotExist); 
     }
 }

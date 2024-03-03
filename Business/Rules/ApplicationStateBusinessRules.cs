@@ -1,4 +1,5 @@
-﻿using Core.CrossCuttingConcerns;
+﻿using Business.Constants;
+using Core.CrossCuttingConcerns;
 using Core.Exceptions.Types;
 using DataAccess.Abstracts;
 
@@ -15,7 +16,7 @@ public class ApplicationStateBusinessRules : BaseBusinessRules
     public async Task CheckIfIdNotExists(int id)
     {
         var isExists = await _repository.GetAsync(x => x.Id == id);
-        if (isExists is null) throw new BusinessException("Application State Id is not exists");
+        if (isExists is null) throw new BusinessException(ApplicationStateManagerMessages.ApplicationStateManagerIdExist);
 
     }
 }

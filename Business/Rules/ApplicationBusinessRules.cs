@@ -1,4 +1,5 @@
 ﻿using Business.Abstracts;
+using Business.Constants;
 using Core.CrossCuttingConcerns;
 using Core.Exceptions.Types;
 using DataAccess.Abstracts;
@@ -20,14 +21,14 @@ public class ApplicationBusinessRules : BaseBusinessRules
     public async Task CheckIfIdNotExists(int applicationId)
     {
         var isExists = await _repository.GetAsync(application => application.Id == applicationId);
-        if (isExists is null) throw new BusinessException("Application Id is not exists");
+        if (isExists is null) throw new BusinessException(ApplicationMessages.ApplicationIdExist);
 
     }
 
     public async Task CheckIfBlacklist(int id)
     {
         var isBlacklisted = await _blacklistService.GetByApplicantId(id);
-        if (isBlacklisted is not null) throw new BusinessException("This applicant cannot create an application because they are blacklisted.");
+        if (isBlacklisted is not null) throw new BusinessException(ApplicationMessages.ApplicantBlackList);
 
     }
 

@@ -11,5 +11,4 @@ public interface IEmployeeService
     Task<IResult> DeleteAsync(DeleteEmployeeRequest request);
     Task<IDataResult<UpdateEmployeeResponse>> UpdateAsync(UpdateEmployeeRequest request);
     Task<IDataResult<CreateEmployeeResponse>> AddAsync(CreateEmployeeRequest request);
-
 }

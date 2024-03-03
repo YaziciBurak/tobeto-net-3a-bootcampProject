@@ -7,8 +7,6 @@ namespace Business.Abstracts;
 
 public interface IUserService
 {
-    
     Task<IDataResult<List<GetAllUserResponse>>> GetAll();
     Task<IDataResult<GetByIdUserResponse>> GetById(int id);
-
 }

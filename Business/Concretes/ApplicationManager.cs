@@ -33,7 +33,6 @@ public class ApplicationManager : IApplicationService
         await _rules.CheckIfBlacklist(request.ApplicantId);
         Application application = _mapper.Map<Application>(request);
         await _repository.AddAsync(application);
-
         CreateApplicationResponse response = _mapper.Map<CreateApplicationResponse>(application);
         return new SuccessDataResult<CreateApplicationResponse>(response, ApplicationMessages.ApplicationAdded);
     }

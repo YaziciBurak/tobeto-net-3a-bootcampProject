@@ -45,13 +45,10 @@ public class ApplicantManager : IApplicantService
 
     public async Task<IDataResult<List<GetAllApplicantResponse>>> GetAll()
     {
-
         List<Applicant> applicant = await _repository.GetAllAsync();
         List<GetAllApplicantResponse> responses = _mapper.Map<List<GetAllApplicantResponse>>(applicant);
         return new SuccessDataResult<List<GetAllApplicantResponse>>(responses, ApplicantMessages.ApplicantGetAll);
     }
-
-
     public async Task<IDataResult<GetByIdApplicantResponse>> GetById(int id)
     {
         await _rules.CheckIfIdNotExists(id);
