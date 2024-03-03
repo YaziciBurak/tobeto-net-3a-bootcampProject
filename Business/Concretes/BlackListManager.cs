@@ -33,6 +33,14 @@ public class BlackListManager : IBlackListService
         CreateBlackListResponse response = _mapper.Map<CreateBlackListResponse>(blacklist);
         return new SuccessDataResult<CreateBlackListResponse>(response, BlackListMessages.BlackListAdded);
     }
+
+    public async Task<IDataResult<GetByIdBlackListResponse>> ApplicantBlacklistAsync(int applicantId)
+    {
+        BlackList blackList = await _blacklistRepository.GetAsync(x => x.ApplicantId == applicantId);
+        GetByIdBlackListResponse response = _mapper.Map<GetByIdBlackListResponse>(blackList);
+        return new SuccessDataResult<GetByIdBlackListResponse>(response);
+    }
+
     public async Task<IResult> DeleteAsync(DeleteBlackListRequest request)
     {
         await _rules.CheckIfIdNotExists(request.Id);

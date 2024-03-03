@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using Business.Abstracts;
 using Business.Constants;
 using Business.Requests.Applications;
 using Business.Responses.Applications;
 using Business.Rules;
-using Core.DataAccess;
-using Core.Exceptions.Types;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
-using DataAccess.Repositories;
 using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +27,10 @@ public class ApplicationManager : IApplicationService
     public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
     {
         await _rules.CheckIfBlacklist(request.ApplicantId);
+        await _rules.CheckIfApplicantNotExists(request.ApplicantId);
+        await _rules.CheckIfBootcampNotExists(request.BootcampId);
+        await _rules.CheckIfApplicationStateNotExist(request.ApplicationStateId);
+        await _rules.CheckIfApplicantBootcampNotExists(request.ApplicantId, request.BootcampId);
         Application application = _mapper.Map<Application>(request);
         await _repository.AddAsync(application);
         CreateApplicationResponse response = _mapper.Map<CreateApplicationResponse>(application);
@@ -66,7 +66,11 @@ public class ApplicationManager : IApplicationService
 
     public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
     {
-        await _rules.CheckIfIdNotExists(request.Id);
+        await _rules.CheckIfBlacklist(request.ApplicantId);
+        await _rules.CheckIfApplicantNotExists(request.ApplicantId);
+        await _rules.CheckIfBootcampNotExists(request.BootcampId);
+        await _rules.CheckIfApplicationStateNotExist(request.ApplicationStateId);
+        await _rules.CheckIfApplicantBootcampNotExists(request.ApplicantId, request.BootcampId);
         Application application = await _repository.GetAsync(x => x.Id == request.Id);
         _mapper.Map(request, application);
         UpdateApplicationResponse response = _mapper.Map<UpdateApplicationResponse>(application);

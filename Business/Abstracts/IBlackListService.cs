@@ -11,5 +11,6 @@ public interface IBlackListService
         Task<IDataResult<CreateBlackListResponse>> AddAsync(CreateBlackListRequest request);
         Task<IResult> DeleteAsync(DeleteBlackListRequest request);
         Task<IDataResult<UpdateBlackListResponse>> UpdateAsync(UpdateBlackListRequest request);
-        Task<GetByIdBlackListResponse> GetByApplicantId(int id);
+        Task<IDataResult<GetByIdBlackListResponse>> ApplicantBlacklistAsync (int id);
+        
 }
