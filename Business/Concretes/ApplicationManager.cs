@@ -4,6 +4,8 @@ using Business.Constants;
 using Business.Requests.Applications;
 using Business.Responses.Applications;
 using Business.Rules;
+using Core.Aspects.AutoFac.Logging;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
@@ -23,7 +25,7 @@ public class ApplicationManager : IApplicationService
         _mapper = mapper;
         _rules = applicationBusinessRules; 
     }
-
+    [LogAspect(typeof(MongoDbLogger))]
     public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
     {
         await _rules.CheckIfBlacklist(request.ApplicantId);

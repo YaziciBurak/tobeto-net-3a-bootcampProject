@@ -3,14 +3,18 @@ using System.Reflection;
 
 namespace Core.Utilities.Interceptors;
 
-public abstract class AspectInterceptorSelector : IInterceptorSelector
+public class AspectInterceptorSelector : IInterceptorSelector
 {
     public IInterceptor[] SelectInterceptors(Type type, MethodInfo method, IInterceptor[] interceptors)
     {
-        var classAttributes = type.GetCustomAttributes<MethodInterceptionBaseAttribute>(true).ToList();
-        var methodAttributes = type.GetMethod(method.Name).GetCustomAttributes<MethodInterceptionBaseAttribute>(true);
+        var classAttributes = type.
+            GetCustomAttributes<MethodInterceptionBaseAttribute>(true).ToList();
+        var methodAttributes = type.GetMethod(method.Name).
+            GetCustomAttributes<MethodInterceptionBaseAttribute>(true);
         classAttributes.AddRange(methodAttributes);
+        //classAttributes.Add(new LogAspect(typeof(MongoDbLogger)));
 
-        return classAttributes.OrderBy(x=>x.Priority).ToArray();
+        return classAttributes.OrderBy(x => x.Priority).ToArray();
+
     }
 }
