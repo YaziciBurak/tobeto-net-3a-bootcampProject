@@ -15,9 +15,6 @@ public class ApplicationBusinessRules : BaseBusinessRules
     private readonly ApplicantBusinessRules _applicantRules;
     private readonly BootcampBusinessRules _bootcampRules;
     private readonly ApplicationStateBusinessRules _applicationStateRules;
-
-
-
     public ApplicationBusinessRules(IApplicationRepository repository, IBlackListService blacklistService, ApplicantBusinessRules applicantRules, BootcampBusinessRules bootcampRules, ApplicationStateBusinessRules applicationStateRules)
     {
         _repository = repository;
@@ -26,20 +23,15 @@ public class ApplicationBusinessRules : BaseBusinessRules
         _bootcampRules = bootcampRules;
         _applicationStateRules = applicationStateRules;
     }
-
     public async Task CheckIfIdNotExists(int applicationId)
     {
         var isExists = await _repository.GetAsync(application => application.Id == applicationId);
         if (isExists is null) throw new BusinessException(ApplicationMessages.ApplicationIdExist);
-
     }
-
     public async Task CheckIfBlacklist(int applicantId)
     {
         var applicant = await _blacklistService.ApplicantBlacklistAsync(applicantId);
         if (applicant.Data is not null)throw new BusinessException(ApplicationMessages.ApplicantBlackList);
-
-
     }
     public async Task CheckIfApplicantNotExists(int applicantId)
     {
@@ -53,11 +45,9 @@ public class ApplicationBusinessRules : BaseBusinessRules
     {
         await _applicationStateRules.CheckIfIdNotExists(applicationStateId);
     }
-
     public async Task CheckIfApplicantBootcampNotExists(int applicantId, int bootcampId)
     {
         var isExists = await _repository.GetAsync(a => a.ApplicantId == applicantId && a.BootcampId == bootcampId);
         if (isExists is not null) throw new BusinessException(ApplicationMessages.ApplicantBootcampExist);
     }
-
 }

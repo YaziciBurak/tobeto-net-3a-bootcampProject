@@ -9,7 +9,7 @@ public class ApplicationMessages
     public static string ApplicationGetById = " Application Id Listed Successfully";
     public static string ApplicationIdExist = "Application Id is not exists";
     public static string ApplicantBlackList = "This applicant cannot create an application because they are blacklisted";
-    public static string ApplicantBootcampExist = "This applicant cannot create an application because they are already did.";
+    public static string ApplicantBootcampExist = "This applicant cannot create an application because they are already did";
 
 
 }

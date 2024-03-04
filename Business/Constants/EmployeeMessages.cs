@@ -8,5 +8,5 @@ public class EmployeeMessages
     public static string EmployeeGetAll = "Employees Listed Successfully";
     public static string EmployeeGetById = "Employee Id Listed Successfully";
     public static string EmployeeIdNotExist = "Employee Id is not exists";
-    public static string EmployeeExist = "UserName or National Identity is already exists";
+    public static string EmployeeExist = "Username or National Identity is already exists";
 }
