@@ -2,18 +2,11 @@
 using Business.Abstracts;
 using Business.Constants;
 using Business.Requests.Employees;
-using Business.Responses.Applicants;
-using Business.Responses.BootcampStates;
 using Business.Responses.Employees;
 using Business.Rules;
-using Core.DataAccess;
-using Core.Exceptions.Types;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
-using DataAccess.Repositories;
 using Entities.Concrates;
-using Entities.Concretes;
-using Microsoft.EntityFrameworkCore;
 
 namespace Business.Concretes;
 

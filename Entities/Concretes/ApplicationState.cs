@@ -15,6 +15,10 @@ public class ApplicationState : BaseEntity<int>
     {
         Applications = new HashSet<Application>();
     }
-   
-    
+
+    public ApplicationState(int id,string name)
+    {
+        Id = id;
+        Name = name;
+    }
 }

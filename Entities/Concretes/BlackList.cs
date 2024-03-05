@@ -15,4 +15,12 @@ public class BlackList : BaseEntity<int>
     {
         
     }
+
+    public BlackList(int id,int applicantId, string reason, DateTime? date)
+    {
+        Id = id;
+        ApplicantId = applicantId;
+        Reason = reason;
+        Date = date;
+    }
 }

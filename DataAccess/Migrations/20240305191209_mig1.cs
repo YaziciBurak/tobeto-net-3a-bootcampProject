@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Test1 : Migration
+    public partial class mig1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,9 +18,9 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,9 +34,9 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,9 +56,9 @@ namespace DataAccess.Migrations
                     NationalIdentity = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,7 +127,7 @@ namespace DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ApplicantId = table.Column<int>(type: "int", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -151,9 +151,9 @@ namespace DataAccess.Migrations
                     BootcampStateId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -181,9 +181,9 @@ namespace DataAccess.Migrations
                     ApplicantId = table.Column<int>(type: "int", nullable: false),
                     BootcampId = table.Column<int>(type: "int", nullable: false),
                     ApplicationStateId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -216,9 +216,9 @@ namespace DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BootcampId = table.Column<int>(type: "int", nullable: false),
                     ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

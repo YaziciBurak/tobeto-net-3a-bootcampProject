@@ -125,34 +125,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Applications", (string)null);
                 });
 
-            modelBuilder.Entity("Entities.Concretes.ApplicationState", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Name");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApplicationStates", (string)null);
-                });
-
             modelBuilder.Entity("Entities.Concretes.BlackList", b =>
                 {
                     b.Property<int>("Id")
@@ -301,6 +273,34 @@ namespace DataAccess.Migrations
                     b.ToTable("BootcampStates", (string)null);
                 });
 
+            modelBuilder.Entity("Entities.Entity.ApplicationState", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Name");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationStates", (string)null);
+                });
+
             modelBuilder.Entity("Entities.Concrates.Employee", b =>
                 {
                     b.HasBaseType("Entities.Concrates.User");
@@ -345,7 +345,7 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Entities.Concretes.ApplicationState", "ApplicationState")
+                    b.HasOne("Entities.Entity.ApplicationState", "ApplicationState")
                         .WithMany("Applications")
                         .HasForeignKey("ApplicationStateId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -432,11 +432,6 @@ namespace DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Concretes.ApplicationState", b =>
-                {
-                    b.Navigation("Applications");
-                });
-
             modelBuilder.Entity("Entities.Concretes.Bootcamp", b =>
                 {
                     b.Navigation("Applications");
@@ -447,6 +442,11 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Concretes.BootcampState", b =>
                 {
                     b.Navigation("Bootcamps");
+                });
+
+            modelBuilder.Entity("Entities.Entity.ApplicationState", b =>
+                {
+                    b.Navigation("Applications");
                 });
 
             modelBuilder.Entity("Entities.Concretes.Applicant", b =>

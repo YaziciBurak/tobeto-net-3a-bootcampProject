@@ -18,16 +18,12 @@ internal class InstructorManager : IInstructorService
     private readonly IInstructorRepository _repository;
     private readonly IMapper _mapper;
     private readonly InstructorBusinessRules _rules;
-
-
-
     public InstructorManager(IInstructorRepository instructorRepository, IMapper mapper,InstructorBusinessRules instructorBusinessRules)
     {
         _repository = instructorRepository;
         _mapper = mapper;
         _rules = instructorBusinessRules;
     }
-
     public async Task<IDataResult<CreateInstructorResponse>> AddAsync(CreateInstructorRequest request)
     {
         await _rules.CheckIfInstructorNotExists(request.UserName, request.NationalIdentity);

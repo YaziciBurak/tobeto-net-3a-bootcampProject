@@ -4,10 +4,8 @@ using Business.Constants;
 using Business.Requests.Bootcamps;
 using Business.Responses.Bootcamps;
 using Business.Rules;
-using Core.Exceptions.Types;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
-using DataAccess.Repositories;
 using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,8 +26,7 @@ public class BootcampManager : IBootcampService
     public async Task<IDataResult<CreateBootcampResponse>> AddAsync(CreateBootcampRequest request)
     {
         await _rules.CheckIfOtherIdNotExists(request.BootcampStateId, request.InstructorId);
-        Bootcamp bootcamp = await _repository.GetAsync(x => x.BootcampStateId == request.BootcampStateId || x.InstructorId == request.InstructorId);
-        bootcamp = _mapper.Map<Bootcamp>(request);
+        Bootcamp bootcamp = _mapper.Map<Bootcamp>(request);
         await _repository.AddAsync(bootcamp);
         CreateBootcampResponse response = _mapper.Map<CreateBootcampResponse>(bootcamp);
         return new SuccessDataResult<CreateBootcampResponse>(response, BootcampMessages.BootcampAdded);

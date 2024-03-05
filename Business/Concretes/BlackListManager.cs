@@ -43,7 +43,7 @@ public class BlackListManager : IBlackListService
 
     public async Task<IResult> DeleteAsync(DeleteBlackListRequest request)
     {
-        await _rules.CheckIfIdNotExists(request.Id);
+        await _rules.CheckIfIdNotExists(request.Id,request.Id);
         BlackList blacklist = await _blacklistRepository.GetAsync(x => x.Id == request.Id);
         await _blacklistRepository.DeleteAsync(blacklist);
         return new SuccessResult(BlackListMessages.BlackListDeleted);

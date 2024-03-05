@@ -19,5 +19,11 @@ public class Application : BaseEntity<int>
 
     }
 
-
+    public Application(int id,int applicantId, int bootcampId, int applicationStateId)
+    {
+        Id = id;
+        ApplicantId = applicantId;
+        BootcampId = bootcampId;
+        ApplicationStateId = applicationStateId;
+    }
 }

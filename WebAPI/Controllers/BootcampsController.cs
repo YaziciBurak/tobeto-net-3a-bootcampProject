@@ -40,8 +40,8 @@ namespace WebAPI.Controllers
             return HandleDataResult(await _service.AddAsync(request));
         }
 
-        [HttpDelete("{Id}")]
-        public async Task<IActionResult> DeleteAsync([FromRoute] DeleteBootcampRequest request)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAsync(DeleteBootcampRequest request)
         {
             return HandleResult(await _service.DeleteAsync(request));
         }

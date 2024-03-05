@@ -14,5 +14,9 @@ public class Instructor : User
         Bootcamps = new HashSet<Bootcamp>();
     }
 
-   
+    public Instructor(int id,string companyName)
+    {
+        Id = id;
+        CompanyName = companyName;
+    }
 }

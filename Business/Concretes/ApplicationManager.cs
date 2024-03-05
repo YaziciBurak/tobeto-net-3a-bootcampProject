@@ -23,7 +23,7 @@ public class ApplicationManager : IApplicationService
     {
         _repository = repository;
         _mapper = mapper;
-        _rules = applicationBusinessRules; 
+        _rules = applicationBusinessRules;
     }
     [LogAspect(typeof(MongoDbLogger))]
     public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
@@ -38,7 +38,7 @@ public class ApplicationManager : IApplicationService
         CreateApplicationResponse response = _mapper.Map<CreateApplicationResponse>(application);
         return new SuccessDataResult<CreateApplicationResponse>(response, ApplicationMessages.ApplicationAdded);
     }
-
+    [LogAspect(typeof(MongoDbLogger))]
     public async Task<IResult> DeleteAsync(DeleteApplicationRequest request)
     {
         await _rules.CheckIfIdNotExists(request.Id);
@@ -48,7 +48,7 @@ public class ApplicationManager : IApplicationService
     }
 
     public async Task<IDataResult<List<GetAllApplicationResponse>>> GetAll()
-    {   
+    {
         List<Application> applications = await _repository.GetAllAsync
           (include: x => x.Include(x => x.Applicant).Include(x => x.ApplicationState).Include(x => x.Bootcamp));
         List<GetAllApplicationResponse> responses = _mapper.Map<List<GetAllApplicationResponse>>(applications);
@@ -63,15 +63,15 @@ public class ApplicationManager : IApplicationService
         GetByIdApplicationResponse response = _mapper.Map<GetByIdApplicationResponse>(application);
         return new SuccessDataResult<GetByIdApplicationResponse>(response, ApplicationMessages.ApplicationGetById);
     }
-
+    [LogAspect(typeof(MongoDbLogger))]
     public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
     {
         await _rules.CheckIfBlacklist(request.ApplicantId);
         await _rules.CheckIfApplicantNotExists(request.ApplicantId);
         await _rules.CheckIfBootcampNotExists(request.BootcampId);
-        await _rules.CheckIfApplicationStateNotExist(request.ApplicationStateId);
         await _rules.CheckIfApplicantBootcampNotExists(request.ApplicantId, request.BootcampId);
-        Application application = await _repository.GetAsync(x => x.Id == request.Id);
+        Application application = await _repository.GetAsync(x => x.Id == request.Id,
+            include: x => x.Include(x => x.Applicant).Include(x => x.ApplicationState).Include(x => x.Bootcamp));
         _mapper.Map(request, application);
         UpdateApplicationResponse response = _mapper.Map<UpdateApplicationResponse>(application);
         return new SuccessDataResult<UpdateApplicationResponse>(response, ApplicationMessages.ApplicationUpdated);
