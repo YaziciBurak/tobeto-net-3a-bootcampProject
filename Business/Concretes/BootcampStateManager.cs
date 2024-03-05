@@ -23,7 +23,7 @@ public class BootcampStateManager : IBootcampStateService
         _rules = bootcampStateBusinessRules;
     }
     public async Task<IDataResult<CreateBootcampStateResponse>> AddAsync(CreateBootcampStateRequest request)
-    {     
+    {
         BootcampState bootcampState = _mapper.Map<BootcampState>(request);
         await _repository.AddAsync(bootcampState);
         CreateBootcampStateResponse response = _mapper.Map<CreateBootcampStateResponse>(bootcampState);
