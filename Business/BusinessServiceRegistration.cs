@@ -1,7 +1,7 @@
 ﻿using Business.Abstracts;
 using Business.Concretes;
 using Core.CrossCuttingConcerns.Rules;
-using Core.Extensions;
+using Core.Exceptions.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 

@@ -4,6 +4,8 @@ using Business.Constants;
 using Business.Requests.BlackList;
 using Business.Responses.BlackList;
 using Business.Rules;
+using Core.Aspects.AutoFac.Logging;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Exceptions.Types;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
@@ -26,6 +28,7 @@ public class BlackListManager : IBlackListService
         _mapper = mapper;
         _rules = blacklistBusinessRules;
     }
+    [LogAspect(typeof(MongoDbLogger))]
     public async Task<IDataResult<CreateBlackListResponse>> AddAsync(CreateBlackListRequest request)
     {
         BlackList blacklist = _mapper.Map<BlackList>(request);

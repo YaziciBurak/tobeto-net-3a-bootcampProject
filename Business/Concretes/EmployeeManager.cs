@@ -4,6 +4,8 @@ using Business.Constants;
 using Business.Requests.Employees;
 using Business.Responses.Employees;
 using Business.Rules;
+using Core.Aspects.AutoFac.Logging;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concrates;
@@ -22,6 +24,7 @@ public class EmployeeManager : IEmployeeService
         _mapper = mapper;
         _rules = employeeBusinessRules;
     }
+    [LogAspect(typeof(MongoDbLogger))]
     public async Task<IDataResult<CreateEmployeeResponse>> AddAsync(CreateEmployeeRequest request)
     {
         await _rules.CheckIfEmployeeNotExists(request.UserName, request.NationalIdentity);

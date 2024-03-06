@@ -4,6 +4,8 @@ using Business.Constants;
 using Business.Requests.Applicants;
 using Business.Responses.Applicants;
 using Business.Rules;
+using Core.Aspects.AutoFac.Logging;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Exceptions.Types;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
@@ -24,7 +26,7 @@ public class ApplicantManager : IApplicantService
         _mapper = mapper;
         _rules = applicantBusinessRules;
     }
-
+    [LogAspect(typeof(MongoDbLogger))]
     public async Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request)
     {
         await _rules.CheckIfApplicantNotExists(request.UserName, request.NationalIdentity);

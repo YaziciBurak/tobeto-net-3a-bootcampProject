@@ -4,6 +4,8 @@ using Business.Constants;
 using Business.Requests.Bootcamps;
 using Business.Responses.Bootcamps;
 using Business.Rules;
+using Core.Aspects.AutoFac.Logging;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
@@ -22,7 +24,7 @@ public class BootcampManager : IBootcampService
         _mapper = mapper;
         _rules = bootcampBusinessRules;
     }
-
+    [LogAspect(typeof(MongoDbLogger))]
     public async Task<IDataResult<CreateBootcampResponse>> AddAsync(CreateBootcampRequest request)
     {
         await _rules.CheckIfOtherIdNotExists(request.BootcampStateId, request.InstructorId);

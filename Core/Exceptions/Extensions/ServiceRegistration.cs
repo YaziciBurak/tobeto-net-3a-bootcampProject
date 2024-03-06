@@ -2,14 +2,14 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Core.Extensions;
+namespace Core.Exceptions.Extensions;
 
 public static class ServiceRegistration
 {
     public static IServiceCollection AddSubClassesOfType(this IServiceCollection services, Assembly assembly,
            Type type, Func<IServiceCollection, Type, IServiceCollection>? addWithLifeCycle = null)
     {
-        
+
         var types = assembly.GetTypes().Where(t => t.IsSubclassOf(type) && type != t).ToList();
         foreach (Type? item in types)
         {

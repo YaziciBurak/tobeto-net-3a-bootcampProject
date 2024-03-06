@@ -4,7 +4,10 @@ using Core.CrossCuttingConcerns.Logging;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Messages;
 using Microsoft.AspNetCore.Http;
+using Core.Utilities.IoC;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+
 
 namespace Core.Aspects.AutoFac.Logging;
 
@@ -17,12 +20,11 @@ public class LogAspect : MethodInterception
     {
         if (loggerService.BaseType != typeof(LoggerServiceBase))
         {
-            throw new Exception(AspectMessages.WrongLoggerType);
+            throw new ArgumentException(AspectMessages.WrongLoggerType);
         }
-        _loggerServiceBase = (LoggerServiceBase)Activator.CreateInstance(loggerService);
-        _httpContextAccessor = (IHttpContextAccessor)Activator.CreateInstance(typeof(HttpContextAccessor));
+        _loggerServiceBase = (LoggerServiceBase)ServiceTool.ServiceProvider.GetRequiredService(loggerService);
+        _httpContextAccessor = ServiceTool.ServiceProvider.GetRequiredService<IHttpContextAccessor>();
     }
-
     protected override void OnBefore(IInvocation invocation)
     {
         var logParameters = new List<LogParameter>();
@@ -42,6 +44,6 @@ public class LogAspect : MethodInterception
             User = _httpContextAccessor.HttpContext == null || _httpContextAccessor.HttpContext.User.Identity.Name == null ? "?"
             : _httpContextAccessor.HttpContext.User.Identity.Name
         };
-        _loggerServiceBase.Info(logDetail.MethodName);
+        _loggerServiceBase.Info(JsonConvert.SerializeObject(logDetail));
     }
 }

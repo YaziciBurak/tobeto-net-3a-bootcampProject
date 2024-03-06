@@ -1,4 +1,4 @@
-﻿using Core.Extensions;
+﻿using Core.Exceptions.Extensions;
 using DataAccess.Concretes.EntityFramework.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

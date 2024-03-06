@@ -2,16 +2,13 @@
 using Business.Abstracts;
 using Business.Constants;
 using Business.Requests.ApplicationStates;
-using Business.Responses.Applications;
 using Business.Responses.ApplicationStates;
 using Business.Rules;
-using Core.Exceptions.Types;
+using Core.Aspects.AutoFac.Logging;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
-using DataAccess.Repositories;
-using Entities.Concretes;
 using Entities.Entity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Business.Concretes;
 
@@ -27,7 +24,7 @@ public class ApplicationStateManager : IApplicationStateService
         _mapper = mapper;
         _rules = applicationStateBusinessRules;
     }
-
+    [LogAspect(typeof(MongoDbLogger))]
     public async Task<IDataResult<CreateApplicationStateResponse>> AddAsync(CreateApplicationStateRequest request)
     {
         {
