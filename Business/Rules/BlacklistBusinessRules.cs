@@ -17,6 +17,6 @@ public class BlacklistBusinessRules : BaseBusinessRules
     public async Task CheckIfIdNotExists(int blacklistId)
     {
         var isExists = await _repository.GetAsync(blacklist => blacklist.Id == blacklistId);
-        if (isExists is null) throw new BusinessException(BlackListMessages.BlackListIdExist);
+        if (isExists is null) throw new BusinessException(BlackListMessages.BlackListIdNotExist);
     }
 }

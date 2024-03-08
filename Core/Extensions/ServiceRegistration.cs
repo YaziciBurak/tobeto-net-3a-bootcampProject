@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Core.Exceptions.Extensions;
+namespace Core.Extensions;
 
 public static class ServiceRegistration
 {

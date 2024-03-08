@@ -7,7 +7,7 @@ public class ApplicationMessages
     public static string ApplicationUpdated = " Application Updated Successfully";
     public static string ApplicationGetAll = " Applications Listed Successfully";
     public static string ApplicationGetById = " Application Id Listed Successfully";
-    public static string ApplicationIdExist = "Application Id is not exists";
+    public static string ApplicationIdNotExist = "Application Id is not exists";
     public static string ApplicantBlackList = "This applicant cannot create an application because they are blacklisted";
     public static string ApplicantBootcampExist = "This applicant cannot create an application because they are already did";
 

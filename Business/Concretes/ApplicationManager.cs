@@ -29,7 +29,7 @@ public class ApplicationManager : IApplicationService
     public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
     {
         await _rules.CheckIfBlacklist(request.ApplicantId);
-        await _rules.CheckIfApplicantNotExists(request.ApplicantId);
+        await _rules.CheckIfApplicantNotExists(request.ApplicantId); 
         await _rules.CheckIfBootcampNotExists(request.BootcampId);
         await _rules.CheckIfApplicationStateNotExist(request.ApplicationStateId);
         await _rules.CheckIfApplicantBootcampNotExists(request.ApplicantId, request.BootcampId);

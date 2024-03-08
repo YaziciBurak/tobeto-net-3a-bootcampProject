@@ -16,7 +16,7 @@ public class ApplicantBusinessRules : BaseBusinessRules
     public async Task CheckIfIdNotExists(int applicantId)
     {
         var isExists = await _repository.GetAsync(applicant => applicant.Id == applicantId);
-        if (isExists is null) throw new BusinessException(ApplicantMessages.ApplicantIdExist);
+        if (isExists is null) throw new BusinessException(ApplicantMessages.ApplicantIdNotExist);
     }
 
     public async Task CheckIfApplicantNotExists(string userName, string nationalIdentity)

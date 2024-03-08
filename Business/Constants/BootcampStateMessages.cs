@@ -7,5 +7,5 @@ public class BootcampStateMessages
     public static string BootcampStateUpdated = "BootcampState Updated Successfully";
     public static string BootcampStateGetAll = "BootcampStates Listed Successfully";
     public static string BootcampStateGetById = "BootcampState Id Listed Successfully";
-    public static string BootcampStateExist = "Bootcamp State Id is not exists";
+    public static string BootcampStateNotExist = "Bootcamp State Id is not exists";
 }

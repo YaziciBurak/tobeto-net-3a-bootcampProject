@@ -28,10 +28,11 @@ public class ApplicationStateManager : IApplicationStateService
     public async Task<IDataResult<CreateApplicationStateResponse>> AddAsync(CreateApplicationStateRequest request)
     {
         {
+            await _rules.CheckIfApplicationStateNameExists(request.Name);
             ApplicationState applicationState = _mapper.Map<ApplicationState>(request);
             await _repository.AddAsync(applicationState);
             CreateApplicationStateResponse response = _mapper.Map<CreateApplicationStateResponse>(applicationState);
-            return new SuccessDataResult<CreateApplicationStateResponse>(response, ApplicationStateManagerMessages.ApplicationStateManagerAdded);
+            return new SuccessDataResult<CreateApplicationStateResponse>(response, ApplicationStateManagerMessages.ApplicationStateAdded);
         }
     }
     public async Task<IResult> DeleteAsync(DeleteApplicationStateRequest request)
@@ -39,14 +40,14 @@ public class ApplicationStateManager : IApplicationStateService
         await _rules.CheckIfIdNotExists(request.Id);
         ApplicationState applicationState = await _repository.GetAsync(x => x.Id == request.Id);
         await _repository.DeleteAsync(applicationState);
-        return new SuccessResult(ApplicationStateManagerMessages.ApplicationStateManagerDeleted);
+        return new SuccessResult(ApplicationStateManagerMessages.ApplicationStateDeleted);
     }
     public async Task<IDataResult<List<GetAllApplicationStateResponse>>> GetAll()
     {
         List<ApplicationState> applicationState = await _repository.GetAllAsync();
 
         List<GetAllApplicationStateResponse> responses = _mapper.Map<List<GetAllApplicationStateResponse>>(applicationState);
-        return new SuccessDataResult<List<GetAllApplicationStateResponse>>(responses, ApplicationStateManagerMessages.ApplicationStateManagerGetAll);
+        return new SuccessDataResult<List<GetAllApplicationStateResponse>>(responses, ApplicationStateManagerMessages.ApplicationStateGetAll);
     }
     public async Task<IDataResult<GetByIdApplicationStateResponse>> GetById(int id)
     {
@@ -54,7 +55,7 @@ public class ApplicationStateManager : IApplicationStateService
         ApplicationState applicationState = await _repository.GetAsync(x => x.Id == id);
 
         GetByIdApplicationStateResponse response = _mapper.Map<GetByIdApplicationStateResponse>(applicationState);
-        return new SuccessDataResult<GetByIdApplicationStateResponse>(response, ApplicationStateManagerMessages.ApplicationStateManagerGetById);
+        return new SuccessDataResult<GetByIdApplicationStateResponse>(response, ApplicationStateManagerMessages.ApplicationStateGetById);
     }
     public async Task<IDataResult<UpdateApplicationStateResponse>> UpdateAsync(UpdateApplicationStateRequest request)
     {
@@ -62,6 +63,6 @@ public class ApplicationStateManager : IApplicationStateService
         ApplicationState applicationState = await _repository.GetAsync(x => x.Id == request.Id);
         _mapper.Map(request, applicationState);
         UpdateApplicationStateResponse response = _mapper.Map<UpdateApplicationStateResponse>(applicationState);
-        return new SuccessDataResult<UpdateApplicationStateResponse>(response, ApplicationStateManagerMessages.ApplicationStateManagerUpdated);
+        return new SuccessDataResult<UpdateApplicationStateResponse>(response, ApplicationStateManagerMessages.ApplicationStateUpdated);
     }
 }

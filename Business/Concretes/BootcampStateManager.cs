@@ -27,6 +27,7 @@ public class BootcampStateManager : IBootcampStateService
     [LogAspect(typeof(MongoDbLogger))]
     public async Task<IDataResult<CreateBootcampStateResponse>> AddAsync(CreateBootcampStateRequest request)
     {
+        await _rules.CheckIfBootcampStateNameExists(request.Name);
         BootcampState bootcampState = _mapper.Map<BootcampState>(request);
         await _repository.AddAsync(bootcampState);
         CreateBootcampStateResponse response = _mapper.Map<CreateBootcampStateResponse>(bootcampState);

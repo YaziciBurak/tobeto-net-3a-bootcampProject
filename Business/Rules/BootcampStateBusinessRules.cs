@@ -12,9 +12,14 @@ public class BootcampStateBusinessRules : BaseBusinessRules
     {
         _repository = repository;
     }
+    public async Task CheckIfBootcampStateNameExists(string bootcampStateName)
+    {
+        var isExits = await _repository.GetAsync(x=>x.Name == bootcampStateName);
+        if (isExits is not null) throw new BusinessException(BootcampMessages.BootcampNameExist);
+    }
     public async Task CheckIfIdNotExists(int bootcampStateId)
     {
         var isExists = await _repository.GetAsync(bootcampState => bootcampState.Id == bootcampStateId);
-        if (isExists is null) throw new BusinessException(BootcampStateMessages.BootcampStateExist);
+        if (isExists is null) throw new BusinessException(BootcampStateMessages.BootcampStateNotExist);
     }
 }

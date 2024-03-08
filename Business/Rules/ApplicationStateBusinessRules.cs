@@ -13,10 +13,15 @@ public class ApplicationStateBusinessRules : BaseBusinessRules
     {
         _repository = repository;
     }
+    public async Task CheckIfApplicationStateNameExists(string applicationStateName)
+    {
+        var isExists = await _repository.GetAsync(x=> x.Name == applicationStateName);
+        if (isExists is not null) throw new BusinessException(ApplicationStateManagerMessages.ApplicationStateNameExist);
+    }
     public async Task CheckIfIdNotExists(int id)
     {
         var isExists = await _repository.GetAsync(x => x.Id == id);
-        if (isExists is null) throw new BusinessException(ApplicationStateManagerMessages.ApplicationStateManagerIdExist);
+        if (isExists is null) throw new BusinessException(ApplicationStateManagerMessages.ApplicationStateIdNotExist);
 
     }
 }

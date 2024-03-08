@@ -28,6 +28,7 @@ public class BootcampManager : IBootcampService
     public async Task<IDataResult<CreateBootcampResponse>> AddAsync(CreateBootcampRequest request)
     {
         await _rules.CheckIfOtherIdNotExists(request.BootcampStateId, request.InstructorId);
+        await _rules.CheckIfBootcampExists(request.Name.TrimStart());
         Bootcamp bootcamp = _mapper.Map<Bootcamp>(request);
         await _repository.AddAsync(bootcamp);
         CreateBootcampResponse response = _mapper.Map<CreateBootcampResponse>(bootcamp);
@@ -54,7 +55,6 @@ public class BootcampManager : IBootcampService
     {
         await _rules.CheckIfIdNotExists(id);
         Bootcamp bootcamp = await _repository.GetAsync(x => x.Id == id, include: x => x.Include(x => x.BootcampState).Include(x => x.Instructor));
-
         GetByIdBootcampResponse response = _mapper.Map<GetByIdBootcampResponse>(bootcamp);
         return new SuccessDataResult<GetByIdBootcampResponse>(response, BootcampMessages.BootcampGetById);
     }
