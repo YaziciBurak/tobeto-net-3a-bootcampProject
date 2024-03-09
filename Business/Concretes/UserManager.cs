@@ -4,8 +4,8 @@ using Business.Constants;
 using Business.Responses.Users;
 using Business.Rules;
 using Core.Utilities.Results;
+using Core.Utilities.Security.Entities;
 using DataAccess.Abstracts;
-using Entities.Concrates;
 
 namespace Business.Concretes;
 
@@ -32,5 +32,9 @@ public class UserManager : IUserService
         User user = await _userRepository.GetAsync(x => x.Id == id);
         GetByIdUserResponse response = _mapper.Map<GetByIdUserResponse>(user);
         return new SuccessDataResult<GetByIdUserResponse>(response, UserMessages.UserGetById);
+    }
+    public async Task<DataResult<User>> GetByMail(string email)
+    {
+        return new SuccessDataResult<User>(await _userRepository.GetAsync(x => x.Email == email));
     }
 }

@@ -4,6 +4,7 @@ using Business.Responses.Applicants;
 using results = Core.Utilities.Results;
 using Microsoft.AspNetCore.Mvc;
 using Core.Utilities.Results;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
@@ -17,7 +18,7 @@ namespace WebAPI.Controllers
         {
             _applicantService = applicantService;
         }
-
+        [Authorize(Roles = "applicant.list")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

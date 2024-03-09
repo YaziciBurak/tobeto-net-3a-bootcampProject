@@ -1,4 +1,5 @@
-﻿using Entities.Concrates;
+﻿using Core.Utilities.Security.Entities;
+using Entities.Concrates;
 
 namespace Entities.Concretes;
 

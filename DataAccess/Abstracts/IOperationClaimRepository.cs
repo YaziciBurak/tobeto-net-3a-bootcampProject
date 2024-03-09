@@ -3,6 +3,6 @@ using Core.Utilities.Security.Entities;
 
 namespace DataAccess.Abstracts;
 
-public interface IUserRepository : IAsyncRepository<User, int>, IRepository<User, int>
+public interface IOperationClaimRepository : IAsyncRepository<OperationClaim, int>
 {
 }

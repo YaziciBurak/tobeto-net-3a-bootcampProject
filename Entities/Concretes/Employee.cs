@@ -1,4 +1,6 @@
-﻿namespace Entities.Concrates;
+﻿using Core.Utilities.Security.Entities;
+
+namespace Entities.Concrates;
 
 public class Employee: User
 {

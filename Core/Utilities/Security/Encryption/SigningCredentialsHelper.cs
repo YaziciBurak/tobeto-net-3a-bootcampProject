@@ -6,6 +6,6 @@ public class SigningCredentialsHelper
 {
     public static SigningCredentials CreateSigningCredentials(SecurityKey securityKey)
     {
-        return new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature); //MD5 
+        return new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);  
     }
 }

@@ -1,4 +1,6 @@
-﻿using Entities.Concrates;
+﻿using Core.Utilities.Security.Entities;
+using DataAccess.Repositories;
+using Entities.Concrates;
 using Entities.Concretes;
 using Entities.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +22,6 @@ namespace DataAccess.Concretes.EntityFramework.Contexts
         public DbSet<Bootcamp> Bootcamps { get; set; }
         public DbSet<BootcampState> BootcampStates { get; set; }
         public DbSet<BootcampImage> BootcampImages { get; set; }
-
 
         public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
         {
