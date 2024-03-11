@@ -1,5 +1,6 @@
 ﻿using Business.Abstracts;
 using Business.Dtos;
+using Business.Rules;
 using Core.Exceptions.Types;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Dtos;
@@ -22,9 +23,10 @@ public class AuthManager : IAuthService
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IInstructorRepository _instructorRepository;
     private readonly IApplicantRepository _applicantRepository;
+    private readonly UserBusinessRules _userBusinessRules;
 
     public AuthManager(IUserService userService, ITokenHelper tokenHelper, IUserOperationClaimRepository userOperationClaimRepository, IUserRepository userRepository,
-        IEmployeeRepository employeeRepository, IInstructorRepository instructorRepository, IApplicantRepository applicantRepository)
+        IEmployeeRepository employeeRepository, IInstructorRepository instructorRepository, IApplicantRepository applicantRepository, UserBusinessRules userBusinessRules)
     {
         _userService = userService;
         _tokenHelper = tokenHelper;
@@ -33,6 +35,7 @@ public class AuthManager : IAuthService
         _employeeRepository = employeeRepository;
         _instructorRepository = instructorRepository;
         _applicantRepository = applicantRepository;
+        _userBusinessRules = userBusinessRules;
     }
     public async Task<DataResult<AccessToken>> CreateAccessToken(User user)
     {
@@ -81,15 +84,15 @@ public class AuthManager : IAuthService
     public async Task<DataResult<AccessToken>> Login(UserForLoginDto userForLoginDto)
     {
         var user = await _userService.GetByMail(userForLoginDto.Email);
-        await UserShouldBeExists(user.Data);
-        await UserEmailShouldBeExists(userForLoginDto.Email);
-        await UserPasswordShouldBeMatch(user.Data.Id, userForLoginDto.Password);
+        await _userBusinessRules.UserShouldBeExists(user.Data);
+        await _userBusinessRules.UserEmailShouldBeExists(userForLoginDto.Email);
+        await _userBusinessRules.UserPasswordShouldBeMatch(user.Data.Id, userForLoginDto.Password);
         var createAccessToken = await CreateAccessToken(user.Data);
         return new SuccessDataResult<AccessToken>(createAccessToken.Data, "Login Success");
     }
     public async Task<DataResult<AccessToken>> RegisterEmployee(EmployeeForRegisterDto employeeForRegisterDto)
     {
-        await UserEmailShouldBeNotExists(employeeForRegisterDto.Email);
+        await _userBusinessRules.UserEmailShouldBeNotExists(employeeForRegisterDto.Email);
         byte[] passwordHash, passwordSalt;
         HashingHelper.CreatePasswordHash(employeeForRegisterDto.Password, out passwordHash, out passwordSalt);
         var employee = new Employee
@@ -110,7 +113,7 @@ public class AuthManager : IAuthService
     }
     public async Task<DataResult<AccessToken>> RegisterApplicant(ApplicantForRegisterDto applicantForRegisterDto)
     {
-        await UserEmailShouldBeNotExists(applicantForRegisterDto.Email);
+        await _userBusinessRules.UserEmailShouldBeNotExists(applicantForRegisterDto.Email);
         byte[] passwordHash, passwordSalt;
         HashingHelper.CreatePasswordHash(applicantForRegisterDto.Password, out passwordHash, out passwordSalt);
         var applicant = new Applicant
@@ -131,7 +134,7 @@ public class AuthManager : IAuthService
     }
     public async Task<DataResult<AccessToken>> RegisterInstructor(InstructorForRegisterDto instructorForRegisterDto)
     {
-        await UserEmailShouldBeNotExists(instructorForRegisterDto.Email);
+        await _userBusinessRules.UserEmailShouldBeNotExists(instructorForRegisterDto.Email);
         byte[] passwordHash, passwordSalt;
         HashingHelper.CreatePasswordHash(instructorForRegisterDto.Password, out passwordHash, out passwordSalt);
         var instructor = new Instructor
@@ -149,27 +152,6 @@ public class AuthManager : IAuthService
         await _instructorRepository.AddAsync(instructor);
         var createAccessToken = await CreateAccessToken(instructor);
         return new SuccessDataResult<AccessToken>(createAccessToken.Data, "Instructor registered successfully");
-    }
-    private async Task UserEmailShouldBeNotExists(string email)
-    {
-        User? user = await _userRepository.GetAsync(u => u.Email == email);
-        if (user is not null) throw new BusinessException("User mail already exists");
-    }
-    private async Task UserEmailShouldBeExists(string email)
-    {
-        User? user = await _userRepository.GetAsync(u => u.Email == email);
-        if (user is null) throw new BusinessException("Email or Password don't match");
-    }
-    private Task UserShouldBeExists(User? user)
-    {
-        if (user is null) throw new BusinessException("Email or Password don't match");
-        return Task.CompletedTask;
-    }
-    private async Task UserPasswordShouldBeMatch(int id, string password)
-    {
-        User? user = await _userRepository.GetAsync(u => u.Id == id);
-        if (!HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-            throw new BusinessException("Email or Password don't match");
     }
 }
 

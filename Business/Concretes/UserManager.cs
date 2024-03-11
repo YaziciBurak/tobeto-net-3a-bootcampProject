@@ -37,4 +37,5 @@ public class UserManager : IUserService
     {
         return new SuccessDataResult<User>(await _userRepository.GetAsync(x => x.Email == email));
     }
+
 }
